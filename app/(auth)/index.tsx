@@ -1,12 +1,13 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import { Link } from 'expo-router';
 
 type Props = {};
 
 const Login = (props: Props) => {
   return (
     <View>
-      <Text>Login</Text>
+      <Link href={'/onboard'}>Login</Link>
     </View>
   );
 };
