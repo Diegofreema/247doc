@@ -20,5 +20,5 @@ export default {
 
 export const colors = {
   textLight: '#8D8D8D',
-  textBlue: '#009B50',
+  textGreen: '#009B50',
 };

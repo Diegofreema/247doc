@@ -1,12 +1,24 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React, { useState } from 'react';
 import { Image } from 'expo-image';
 import { Container } from '@/components/Ui/Container';
 import { MyText } from '@/components/Ui/MyText';
 import { colors } from '@/constants/Colors';
-import { HStack } from '@gluestack-ui/themed';
-import { Link } from 'expo-router';
-
+import { Button, HStack } from '@gluestack-ui/themed';
+import { Link, useRouter } from 'expo-router';
+import { AntDesign } from '@expo/vector-icons';
+import Animated, {
+  FadeIn,
+  FadeOut,
+  SlideInLeft,
+  SlideInRight,
+  SlideOutLeft,
+} from 'react-native-reanimated';
+import {
+  GestureDetector,
+  Gesture,
+  Directions,
+} from 'react-native-gesture-handler';
 const onBoardData = [
   {
     heading: 'Welcome to 247Doc',
@@ -31,25 +43,87 @@ const onBoardData = [
 const Onboard = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const router = useRouter();
   const data = onBoardData[currentIndex];
+
+  const onBack = () => {
+    const isFirstScreen = currentIndex === 0;
+    if (!isFirstScreen) {
+      setCurrentIndex((prev) => prev - 1);
+    }
+  };
+  const onNext = () => {
+    if (currentIndex < onBoardData.length - 1) {
+      setCurrentIndex((prev) => prev + 1);
+    } else {
+      router.replace('/(app)/(tabs)/');
+    }
+  };
+
+  const swipe = Gesture.Simultaneous(
+    Gesture.Fling().direction(Directions.RIGHT).onEnd(onBack),
+    Gesture.Fling().direction(Directions.LEFT).onEnd(onNext)
+  );
+
+  const animation = SlideInRight;
   return (
-    <Container>
-      <View style={styles.imgContainer}>
-        <Image source={data.imgUrl} style={styles.img} />
-      </View>
+    <GestureDetector gesture={swipe}>
+      <Container>
+        <Animated.View key={currentIndex} entering={animation}>
+          <Animated.View entering={FadeIn} style={styles.imgContainer}>
+            <Image source={data.imgUrl} style={styles.img} />
+          </Animated.View>
 
-      <View style={styles.textContainer}>
-        <MyText style={styles.headingText} text={data.heading} />
+          <View style={styles.textContainer}>
+            <Animated.Text entering={animation} style={styles.headingText}>
+              {data.heading}
+            </Animated.Text>
+            <View style={{ minHeight: 110 }}>
+              <Animated.Text
+                entering={animation.delay(150)}
+                style={styles.subText}
+              >
+                {data.subText}
+              </Animated.Text>
+            </View>
+          </View>
+        </Animated.View>
+        <HStack justifyContent="space-between" alignItems="center">
+          <Link href={'/(app)/(tabs)/'} style={styles.skip}>
+            Skip
+          </Link>
+          <HStack gap={5}>
+            {onBoardData.map((_, index) => (
+              <View
+                key={index}
+                style={{
+                  width: index === currentIndex ? 20 : 10,
 
-        <MyText style={styles.subText} text={data.subText} />
-      </View>
+                  height: 8,
+                  borderRadius: 10,
+                  backgroundColor:
+                    index === currentIndex
+                      ? colors.textGreen
+                      : colors.textLight,
+                }}
+              />
+            ))}
+          </HStack>
 
-      <HStack mt={20}>
-        <Link href={'/(app)/(tabs)/'}>
-          <MyText text="Skip" style={styles.skip} />
-        </Link>
-      </HStack>
-    </Container>
+          <Button
+            style={{
+              backgroundColor: colors.textGreen,
+              borderRadius: 999,
+              height: 60,
+              width: 60,
+            }}
+            onPress={onNext}
+          >
+            <AntDesign name="arrowright" size={20} color="white" />
+          </Button>
+        </HStack>
+      </Container>
+    </GestureDetector>
   );
 };
 
@@ -76,14 +150,14 @@ const styles = StyleSheet.create({
   },
 
   subText: {
-    fontSize: 12,
+    fontSize: 14,
     textAlign: 'center',
     fontFamily: 'PoppinsMedium',
     color: colors.textLight,
   },
   skip: {
-    color: colors.textBlue,
-    fontSize: 12,
+    color: colors.textGreen,
+    fontSize: 15,
     fontFamily: 'PoppinsMedium',
   },
 });

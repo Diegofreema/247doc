@@ -1,24 +1,22 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
 import React from 'react';
-import { Link, useRouter } from 'expo-router';
-import { VStack } from '@gluestack-ui/themed';
-import { NavHeader } from '@/components/Ui/NavHeader';
-import { Container } from '@/components/Ui/Container';
-import { BoldHeader } from '@/components/Ui/BoldHeader';
-import { TextInput } from '@/components/Ui/TextInput';
-import { colors } from '@/constants/Colors';
-import { MyButton } from '@/components/Ui/MyButton';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
+
+import { Container } from '@/components/Ui/Container';
+import { NavHeader } from '@/components/Ui/NavHeader';
+import { BoldHeader } from '@/components/Ui/BoldHeader';
+import { VStack } from '@gluestack-ui/themed';
+import { TextInput } from '@/components/Ui/TextInput';
+import { useRouter } from 'expo-router';
+import { colors } from '@/constants/Colors';
+import { MyButton } from '@/components/Ui/MyButton';
+
 type Props = {};
 const validationSchema = yup.object().shape({
   email: yup.string().email('Invalid email').required('Email is required'),
-  password: yup
-    .string()
-    .min(5, 'Password must be at least 5 characters')
-    .required('Password is required'),
 });
-const Login = (props: Props) => {
+const forgot = (props: Props) => {
   const router = useRouter();
   const {
     handleChange,
@@ -38,55 +36,30 @@ const Login = (props: Props) => {
     onSubmit: (values) => {},
   });
   const navigate = () => {
-    router.push('/signUp');
+    router.back();
   };
-
-  const { email, password } = values;
   return (
     <Container>
+      <NavHeader />
       <VStack mt={30}>
         <BoldHeader
-          text="Sign in"
-          subText="Enter your Login details on to continue"
+          text="Forgot Password"
+          subText="Let us help you get back into your account"
         />
       </VStack>
-
       <VStack mt={40} gap={25}>
         <>
           <TextInput
-            value={email}
             placeholder="Email"
             onChangeText={handleChange('email')}
+            value={values.email}
           />
-
-          {errors.email && touched.email && (
+          {touched.email && errors.email && (
             <Text style={{ color: 'red' }}>{errors.email}</Text>
           )}
         </>
 
-        <>
-          <TextInput
-            value={password}
-            placeholder="Password"
-            onChangeText={handleChange('password')}
-          />
-
-          {errors.password && touched.password && (
-            <Text style={{ color: 'red' }}>{errors.password}</Text>
-          )}
-        </>
-
-        <Pressable
-          onPress={() => router.push('/forgot')}
-          style={({ pressed }) => [
-            styles.textContainer,
-            { opacity: pressed ? 0.5 : 1 },
-          ]}
-        >
-          <Text style={styles.text}>Forgot password</Text>
-        </Pressable>
-
-        <MyButton onPress={() => handleSubmit()} text="Login" />
+        <MyButton onPress={() => handleSubmit()} text="Submit" />
 
         <Pressable
           onPress={navigate}
@@ -96,8 +69,7 @@ const Login = (props: Props) => {
           ]}
         >
           <Text style={styles.createAccountText}>
-            Don’t have an account?{' '}
-            <Text style={styles.text}>Create Account</Text>
+            Remember password ? <Text style={styles.text}>login</Text>
           </Text>
         </Pressable>
       </VStack>
@@ -105,8 +77,7 @@ const Login = (props: Props) => {
   );
 };
 
-export default Login;
-
+export default forgot;
 const styles = StyleSheet.create({
   text: {
     color: colors.textGreen,

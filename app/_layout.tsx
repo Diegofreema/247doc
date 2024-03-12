@@ -1,19 +1,14 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from '@react-navigation/native';
+import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { GluestackUIProvider, Text, Box } from '@gluestack-ui/themed';
+import { GluestackUIProvider } from '@gluestack-ui/themed';
 import { config } from '@gluestack-ui/config';
-import { useColorScheme } from '@/components/useColorScheme';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StatusBar } from 'react-native';
-
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { StatusBar } from 'expo-status-bar';
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
@@ -47,24 +42,24 @@ export default function RootLayout() {
   }
 
   return (
-    <GluestackUIProvider config={config}>
-      <RootLayoutNav />
-    </GluestackUIProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <GluestackUIProvider config={config}>
+        <RootLayoutNav />
+      </GluestackUIProvider>
+    </GestureHandlerRootView>
   );
 }
 
 function RootLayoutNav() {
-  const colorScheme = useColorScheme();
 
   return (
     <>
-      <StatusBar barStyle={'dark-content'} backgroundColor={'white'} />
-      <SafeAreaView style={{ flex: 1 }}>
-        <Stack initialRouteName="(auth)">
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="(app)" options={{ headerShown: false }} />
-        </Stack>
-      </SafeAreaView>
+      <ThemeProvider value={DefaultTheme}>
+        <SafeAreaView style={{ flex: 1 }}>
+          <StatusBar style="dark" />
+          <Slot />
+        </SafeAreaView>
+      </ThemeProvider>
     </>
   );
 }

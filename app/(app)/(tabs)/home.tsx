@@ -3,15 +3,10 @@ import { StyleSheet } from 'react-native';
 import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
 import { Link } from 'expo-router';
+import { NavHeader } from '@/components/Ui/NavHeader';
 
 export default function TabOneScreen() {
-  return (
-    <View>
-      <View>
-        <Link href={'/onboard'}>Login</Link>
-      </View>
-    </View>
-  );
+  return <View></View>;
 }
 
 const styles = StyleSheet.create({
