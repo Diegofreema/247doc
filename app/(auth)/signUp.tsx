@@ -16,7 +16,7 @@ import { withZodSchema } from 'formik-validator-zod';
 import { HStack, VStack } from '@gluestack-ui/themed';
 import { NavHeader } from '@/components/Ui/NavHeader';
 import { TextInput } from '@/components/Ui/TextInput';
-import { useRouter } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { BoldHeader } from '@/components/Ui/BoldHeader';
 import { colors } from '@/constants/Colors';
 import { MyButton } from '@/components/Ui/MyButton';
@@ -305,6 +305,9 @@ const signUp = (props: Props) => {
           </>
 
           <MyButton onPress={() => handleSubmit()} text="Create Account" />
+          <Link href="/verify" asChild>
+            <Text>verify</Text>
+          </Link>
         </VStack>
       </ScrollView>
     </Container>

@@ -34,8 +34,10 @@ const Login = (props: Props) => {
 
       password: '',
     },
-    validationSchema,
-    onSubmit: (values) => {},
+    // validationSchema,
+    onSubmit: (values) => {
+      router.push('/home');
+    },
   });
   const navigate = () => {
     router.push('/signUp');

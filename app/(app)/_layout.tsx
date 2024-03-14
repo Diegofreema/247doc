@@ -10,9 +10,9 @@ const Layout = (props: Props) => {
   useEffect(() => {
     getId();
   }, []);
-  if (!id) {
-    return <Redirect href="/" />;
-  }
+  // if (!id) {
+  //   return <Redirect href="/" />;
+  // }
   return (
     <Stack screenOptions={{ headerShown: false }} initialRouteName="onboard" />
   );
