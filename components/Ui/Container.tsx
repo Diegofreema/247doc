@@ -6,7 +6,7 @@ type Props = {
 };
 
 export const Container = ({ children }: Props): JSX.Element => {
-  return <View style={styles.container}>{children}</View>;
+  return <View style={[styles.container]}>{children}</View>;
 };
 
 const styles = StyleSheet.create({

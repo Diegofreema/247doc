@@ -6,16 +6,20 @@ import {
   Text,
   TextInputProps,
   TextInput as TextInputComponent,
+  StyleProp,
+  TextStyle,
 } from 'react-native';
 
-interface Props extends TextInputProps {}
+interface Props extends TextInputProps {
+  style?: StyleProp<TextStyle>;
+}
 
 export const TextInput = (props: Props): JSX.Element => {
   return (
     <TextInputComponent
       {...props}
       placeholderTextColor={colors.textLight}
-      style={styles.input}
+      style={[styles.input, props.style]}
     />
   );
 };

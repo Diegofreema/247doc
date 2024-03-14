@@ -51,13 +51,12 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-
   return (
     <>
       <ThemeProvider value={DefaultTheme}>
         <SafeAreaView style={{ flex: 1 }}>
           <StatusBar style="dark" />
-          <Slot />
+          <Slot screenOptions={{ headerShown: false }} />
         </SafeAreaView>
       </ThemeProvider>
     </>
