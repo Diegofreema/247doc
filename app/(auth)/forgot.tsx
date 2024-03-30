@@ -11,6 +11,9 @@ import { TextInput } from '@/components/Ui/TextInput';
 import { useRouter } from 'expo-router';
 import { colors } from '@/constants/Colors';
 import { MyButton } from '@/components/Ui/MyButton';
+import axios from 'axios';
+import { api } from '@/lib/helper';
+import Toast from 'react-native-toast-message';
 
 type Props = {};
 const validationSchema = yup.object().shape({
@@ -26,14 +29,54 @@ const forgot = (props: Props) => {
     values,
     setValues,
     resetForm,
+    isSubmitting,
   } = useFormik({
     initialValues: {
       email: '',
-
-      password: '',
     },
     validationSchema,
-    onSubmit: (values) => {},
+    onSubmit: async (values) => {
+      try {
+        const { data } = await axios.post(
+          `${api}?api=recoverpassword&patientemail=${values.email}`
+        );
+
+        if (data === "{'result': 'failed'}") {
+          Toast.show({
+            type: 'transparentToast',
+            text1: 'Please try again',
+            text2: 'Something went wrong',
+            position: 'top',
+          });
+          return;
+        }
+        if (data !== '') {
+          Toast.show({
+            type: 'transparentToast',
+            text1: 'Please try again',
+            text2: 'Email not found',
+            position: 'top',
+          });
+          return;
+        }
+
+        Toast.show({
+          type: 'transparentToast',
+          text1: 'Please check your email',
+          text2: 'We have sent you an email',
+          position: 'top',
+        });
+
+        router.back();
+      } catch (error) {
+        Toast.show({
+          type: 'transparentToast',
+          text1: 'Please try again',
+          text2: 'Incorrect credentials',
+          position: 'top',
+        });
+      }
+    },
   });
   const navigate = () => {
     router.back();
@@ -59,7 +102,11 @@ const forgot = (props: Props) => {
           )}
         </>
 
-        <MyButton onPress={() => handleSubmit()} text="Submit" />
+        <MyButton
+          loading={isSubmitting}
+          onPress={() => handleSubmit()}
+          text="Submit"
+        />
 
         <Pressable
           onPress={navigate}

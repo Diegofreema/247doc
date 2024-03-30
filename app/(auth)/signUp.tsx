@@ -23,8 +23,11 @@ import { MyButton } from '@/components/Ui/MyButton';
 import { useState } from 'react';
 import { format } from 'date-fns';
 import axios from 'axios';
+import Toast from 'react-native-toast-message';
+import { api } from '@/lib/helper';
+import { ConfirmModal } from '@/components/Ui/Modals/ConfirmModal';
 type Props = {};
-const api = process.env.EXPO_PUBLIC_API!;
+
 const defaultDateOfBirth = new Date(
   new Date().setFullYear(new Date().getFullYear() - 18)
 );
@@ -49,17 +52,12 @@ const validationSchema = yup.object().shape({
   phoneNumber: yup.string().required('Phone number is required'),
   address: yup.string().required('Address is required'),
   gender: yup.string().required('State is required'),
-  dateOfBirth: yup
-    .date()
-    .default(
-      () => new Date(new Date().setFullYear(new Date().getFullYear() - 18))
-    )
-    .required('Date of birth is required'),
+  dateOfBirth: yup.string().required('Date of birth is required'),
 });
 const signUp = (props: Props) => {
   const router = useRouter();
   const [date, setDate] = useState(new Date(defaultDateOfBirth));
-  console.log('🚀 ~ signUp ~ date:', date);
+  const [showModal, setShowModal] = useState(false);
 
   const [show, setShow] = useState(false);
   const {
@@ -70,6 +68,7 @@ const signUp = (props: Props) => {
     values,
     setValues,
     resetForm,
+    isSubmitting,
   } = useFormik({
     initialValues: {
       email: '',
@@ -78,9 +77,9 @@ const signUp = (props: Props) => {
       password: '',
       confirmPassword: '',
       phoneNumber: '',
-      address: '',
+      address: 'Male',
       gender: '',
-      dateOfBirth: format(defaultDateOfBirth, 'MM-dd-yyyy'),
+      dateOfBirth: format(defaultDateOfBirth, 'MM/dd/yyyy'),
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -94,27 +93,47 @@ const signUp = (props: Props) => {
         password,
         phoneNumber,
       } = values;
+
       const fullName = `${firstName} ${lastName}`;
-      https: try {
+      try {
         const { data } = await axios.post(
           `${api}?api=createaccount&patientemail=${email}&patientgender=${gender}&patientfname=${gender}&patientdob=${dateOfBirth}&patientphone=${phoneNumber}&patientadres=${address}&pasword1=${password}&patientlname=${fullName}`
         );
+
         if (data === 'Success') {
-          router.replace('/');
+          setShowModal(true);
+          return;
         }
-      } catch (error) {}
-      router.replace('/onboard');
+
+        if (data === 'Email Already Exist') {
+          Toast.show({
+            type: 'transparentToast',
+            text1: 'Error',
+            text2: 'Email already exist',
+            position: 'top',
+          });
+          return;
+        }
+      } catch (error) {
+        console.log(error);
+        Toast.show({
+          type: 'transparentToast',
+          text1: 'Error',
+          text2: 'Something went wrong',
+          position: 'top',
+        });
+      }
     },
   });
-  const toggleDatePicker = () => {
-    setShow((prev) => !prev);
-  };
+  // const toggleDatePicker = () => {
+  //   setShow((prev) => !prev);
+  // };
   const onChange = ({ type }: any, selectedDate: any) => {
     if (type === 'set') {
       const currentDate = selectedDate;
       setShow(false);
       setDate(currentDate);
-      setValues({ ...values, dateOfBirth: format(currentDate, 'dd-MM-yyyy') });
+      setValues({ ...values, dateOfBirth: format(currentDate, 'MM/dd/yyyy') });
     }
   };
 
@@ -122,10 +141,14 @@ const signUp = (props: Props) => {
     setShow(true);
   };
 
-  const onChangeIos = () => {
-    setValues({ ...values, dateOfBirth: format(date, 'yyyy-MM-dd') });
+  // const onChangeIos = () => {
+  //   setValues({ ...values, dateOfBirth: format(date, 'yyyy-MM-dd') });
+  // };
+  const onPress = () => {
+    router.replace('/onboard');
+    setShowModal(false);
+    resetForm();
   };
-
   const {
     address,
     confirmPassword,
@@ -137,10 +160,10 @@ const signUp = (props: Props) => {
     password,
     phoneNumber,
   } = values;
-  console.log(show);
 
   return (
     <Container>
+      <ConfirmModal name={firstName} onPress={onPress} isVisible={showModal} />
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
@@ -156,6 +179,7 @@ const signUp = (props: Props) => {
         <VStack mt={40} gap={25}>
           <>
             <TextInput
+              value={firstName}
               placeholder="First name"
               onChangeText={handleChange('firstName')}
             />
@@ -167,6 +191,7 @@ const signUp = (props: Props) => {
           </>
           <>
             <TextInput
+              value={lastName}
               placeholder="Last name"
               onChangeText={handleChange('lastName')}
             />
@@ -179,6 +204,8 @@ const signUp = (props: Props) => {
           </>
           <>
             <TextInput
+              keyboardType="email-address"
+              value={email}
               placeholder="Email"
               onChangeText={handleChange('email')}
             />
@@ -190,8 +217,10 @@ const signUp = (props: Props) => {
           </>
           <>
             <TextInput
+              value={phoneNumber}
               placeholder="Phone"
               onChangeText={handleChange('phoneNumber')}
+              keyboardType="phone-pad"
             />
             {touched.phoneNumber && errors.phoneNumber && (
               <Text style={{ color: 'red', fontWeight: 'bold' }}>
@@ -293,6 +322,7 @@ const signUp = (props: Props) => {
 
           <>
             <TextInput
+              value={address}
               placeholder="Street Address"
               onChangeText={handleChange('address')}
             />
@@ -304,6 +334,8 @@ const signUp = (props: Props) => {
           </>
           <>
             <TextInput
+              secureTextEntry
+              value={password}
               placeholder="Password"
               onChangeText={handleChange('password')}
             />
@@ -315,6 +347,8 @@ const signUp = (props: Props) => {
           </>
           <>
             <TextInput
+              value={confirmPassword}
+              secureTextEntry
               placeholder="Confirm Password"
               onChangeText={handleChange('confirmPassword')}
             />
@@ -325,10 +359,11 @@ const signUp = (props: Props) => {
             )}
           </>
 
-          <MyButton onPress={() => handleSubmit()} text="Create Account" />
-          <Link href="/verify" asChild>
-            <Text>verify</Text>
-          </Link>
+          <MyButton
+            loading={isSubmitting}
+            onPress={() => handleSubmit()}
+            text="Create Account"
+          />
         </VStack>
       </ScrollView>
     </Container>

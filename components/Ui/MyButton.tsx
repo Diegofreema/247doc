@@ -1,5 +1,5 @@
 import { colors } from '@/constants/Colors';
-import { Button } from '@gluestack-ui/themed';
+
 import {
   StyleSheet,
   View,
@@ -8,10 +8,12 @@ import {
   TextStyle,
   ViewStyle,
 } from 'react-native';
+import { Button } from 'react-native-paper';
 
 type Props = {
   text: string;
   onPress: () => void;
+  loading?: boolean;
   textStyle?: StyleProp<TextStyle>;
   style?: StyleProp<ViewStyle>;
 };
@@ -21,18 +23,28 @@ export const MyButton = ({
   textStyle,
   onPress,
   style,
+  loading,
 }: Props): JSX.Element => {
   return (
     <Button
+      loading={loading}
       onPress={onPress}
-      style={[
-        { height: 50, borderRadius: 10, backgroundColor: colors.textGreen },
+      rippleColor={colors.textGreen2}
+      contentStyle={[
+        {
+          height: 50,
+          borderRadius: 5,
+          backgroundColor: colors.textGreen,
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
         style,
       ]}
+      style={{ borderRadius: 5 }}
+      textColor="white"
+      labelStyle={[{ fontFamily: 'Poppins', color: 'white' }, textStyle]}
     >
-      <Text style={[{ fontFamily: 'Poppins', color: 'white' }, textStyle]}>
-        {text}
-      </Text>
+      {text}
     </Button>
   );
 };
