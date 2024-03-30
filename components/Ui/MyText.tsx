@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text, StyleProp, TextStyle } from 'react-native';
 
 type Props = {
-  text: string;
+  text: string | number;
   style?: StyleProp<TextStyle>;
 };
 

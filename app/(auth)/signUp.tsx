@@ -22,9 +22,9 @@ import { colors } from '@/constants/Colors';
 import { MyButton } from '@/components/Ui/MyButton';
 import { useState } from 'react';
 import { format } from 'date-fns';
-
+import axios from 'axios';
 type Props = {};
-
+const api = process.env.EXPO_PUBLIC_API!;
 const defaultDateOfBirth = new Date(
   new Date().setFullYear(new Date().getFullYear() - 18)
 );
@@ -80,10 +80,31 @@ const signUp = (props: Props) => {
       phoneNumber: '',
       address: '',
       gender: '',
-      dateOfBirth: format(defaultDateOfBirth, 'dd-MM-yyyy'),
+      dateOfBirth: format(defaultDateOfBirth, 'MM-dd-yyyy'),
     },
     validationSchema,
-    onSubmit: (values) => {},
+    onSubmit: async (values) => {
+      const {
+        address,
+        dateOfBirth,
+        email,
+        firstName,
+        gender,
+        lastName,
+        password,
+        phoneNumber,
+      } = values;
+      const fullName = `${firstName} ${lastName}`;
+      https: try {
+        const { data } = await axios.post(
+          `${api}?api=createaccount&patientemail=${email}&patientgender=${gender}&patientfname=${gender}&patientdob=${dateOfBirth}&patientphone=${phoneNumber}&patientadres=${address}&pasword1=${password}&patientlname=${fullName}`
+        );
+        if (data === 'Success') {
+          router.replace('/');
+        }
+      } catch (error) {}
+      router.replace('/onboard');
+    },
   });
   const toggleDatePicker = () => {
     setShow((prev) => !prev);

@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable, ScrollView, StyleSheet } from 'react-native';
 
 import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
@@ -9,11 +9,13 @@ import { BoldHeader } from '@/components/Ui/BoldHeader';
 import { HStack, SearchIcon, VStack } from '@gluestack-ui/themed';
 import { TextInput } from '@/components/Ui/TextInput';
 import { AppointmentCard } from '@/components/Home/AppointmentCard';
+import { Category } from '@/components/Home/Category';
+import { Doctors } from '@/components/Home/Doctors';
 
 export default function TabOneScreen() {
   const onPress = () => {};
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <VStack px={20}>
         <VStack mt={20} gap={10}>
           <BoldHeader text="Diego" />
@@ -48,22 +50,25 @@ export default function TabOneScreen() {
       >
         <AppointmentCard />
       </View>
-    </View>
+
+      <View style={styles.cat}>
+        <Category />
+      </View>
+      <View style={styles.cat}>
+        <Doctors />
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  cat: {
+    backgroundColor: 'transparent',
+    marginVertical: 20,
+    paddingHorizontal: 20,
+  },
   container: {
     flex: 1,
     backgroundColor: 'white',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
   },
 });

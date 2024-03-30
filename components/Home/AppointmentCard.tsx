@@ -12,6 +12,7 @@ import { MyText } from '../Ui/MyText';
 import { FontAwesome } from '@expo/vector-icons';
 import { colors } from '../../constants/Colors';
 import { useState } from 'react';
+import { SeeAll } from './SeeAll';
 
 type Props = {};
 
@@ -20,15 +21,20 @@ const threeItems = array.slice(0, 3);
 export const AppointmentCard = ({}: Props): JSX.Element => {
   const [currentIndex, setCurrentIndex] = useState<number | null>(0);
   console.log('🚀 ~ AppointmentCard ~ currentIndex:', currentIndex);
-  const onViewableItemsChanged = {};
+
   return (
     <>
       <View style={{ paddingRight: 20 }}>
-        <Header />
+        <SeeAll
+          text="Appointments"
+          onPress={() => {}}
+          counter={array.length}
+          subText="See all"
+        />
       </View>
       <FlatList
         data={threeItems}
-        keyExtractor={(item) => item.toString()}
+        keyExtractor={(item, index) => index?.toString()}
         renderItem={({ item }) => <AppointmentCardsItem />}
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -47,23 +53,26 @@ export const AppointmentCard = ({}: Props): JSX.Element => {
         viewabilityConfig={{
           itemVisiblePercentThreshold: 70,
         }}
+        ListEmptyComponent={() => <ListEmptyComponent />}
       />
-      <HStack justifyContent="center" gap={5} mt={10}>
-        {threeItems.map((_, index) => {
-          return (
-            <View
-              style={{
-                width: currentIndex === index ? 20 : 10,
-                backgroundColor:
-                  currentIndex === index ? colors.textGreen : colors.textGray,
-                height: 10,
-                borderRadius: 5,
-              }}
-              key={index}
-            />
-          );
-        })}
-      </HStack>
+      {threeItems.length > 0 && (
+        <HStack justifyContent="center" gap={5} mt={10}>
+          {threeItems.map((_, index) => {
+            return (
+              <View
+                style={{
+                  width: currentIndex === index ? 20 : 10,
+                  backgroundColor:
+                    currentIndex === index ? colors.textGreen : colors.textGray,
+                  height: 10,
+                  borderRadius: 5,
+                }}
+                key={index}
+              />
+            );
+          })}
+        </HStack>
+      )}
     </>
   );
 };
@@ -123,43 +132,49 @@ const AppointmentCardsItem = () => {
   );
 };
 
-const Header = () => {
+const ListEmptyComponent = () => {
+  const { width } = useWindowDimensions();
   return (
-    <HStack alignItems="center" justifyContent="space-between">
-      <HStack gap={5} alignItems="center">
-        <MyText
-          text="Appointments"
-          style={{ fontFamily: 'PoppinsBold', fontSize: 15 }}
-        />
-        <View
-          style={{
-            width: 20,
-            height: 20,
-            backgroundColor: 'red',
-            borderRadius: 10,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
+    <VStack bg={colors.textGreen} p={20} w={width - 35} borderRadius={10}>
+      <HStack alignItems="center" gap={10} mb={20}>
+        <VStack>
           <MyText
-            text={`${array.length}`}
+            text="You currently don’t have any
+appointment at the moment"
             style={{
+              fontSize: 13,
               color: 'white',
-              fontFamily: 'Poppins',
-              fontSize: 12,
+              fontFamily: 'PoppinsMedium',
             }}
           />
-        </View>
-      </HStack>
-      <Pressable
-        onPress={() => {}}
-        style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}
-      >
-        <MyText
-          text="See all"
-          style={{ color: colors.textGreen, fontFamily: 'PoppinsMedium' }}
+          <Pressable>
+            <HStack
+              gap={5}
+              alignItems="center"
+              padding={10}
+              borderRadius={10}
+              bg={colors.textGreen2}
+              mt={10}
+            >
+              <FontAwesome name="calendar" color="white" size={13} />
+              <MyText
+                text="Book an Appointment"
+                style={{
+                  fontSize: 13,
+                  color: 'white',
+                  fontFamily: 'Poppins',
+                }}
+              />
+            </HStack>
+          </Pressable>
+        </VStack>
+
+        <Image
+          source={require('../../assets/images/empty.png')}
+          style={{ width: 100, height: 100 }}
+          contentFit="contain"
         />
-      </Pressable>
-    </HStack>
+      </HStack>
+    </VStack>
   );
 };
