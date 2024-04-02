@@ -15,8 +15,8 @@ export const useAuth = create<Props>((set) => ({
     if (id) set({ id });
   },
   setId: (id: string) => {
-    const authId = SecureStore.setItem('id', id);
-    set({ id: authId });
+    set({ id: id });
+    SecureStore.setItem('id', id);
   },
   clearId: () => set({ id: null }),
 }));

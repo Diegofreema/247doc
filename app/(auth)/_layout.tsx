@@ -1,11 +1,20 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
-import { Stack } from 'expo-router';
+import React, { useEffect } from 'react';
+import { Redirect, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { useAuth } from '@/lib/zustand/auth';
 
 type Props = {};
 
 const AuthLayout = (props: Props) => {
+  const { id, getId } = useAuth();
+  useEffect(() => {
+    getId();
+  }, []);
+  if (id) {
+    return <Redirect href="/home" />;
+  }
+
   return (
     <>
       <StatusBar style="dark" />

@@ -14,6 +14,7 @@ import axios from 'axios';
 import { api } from '@/lib/helper';
 import Toast from 'react-native-toast-message';
 import { LoadingComponent } from '@/components/Ui/Modals/LoadingModal';
+import { useAuth } from '@/lib/zustand/auth';
 type Props = {};
 const validationSchema = yup.object().shape({
   email: yup.string().email('Invalid email').required('Email is required'),
@@ -24,6 +25,7 @@ const validationSchema = yup.object().shape({
 });
 const Login = (props: Props) => {
   const router = useRouter();
+  const { setId } = useAuth();
   const {
     handleChange,
     handleSubmit,
@@ -42,7 +44,7 @@ const Login = (props: Props) => {
     onSubmit: async (values) => {
       try {
         const { data } = await axios.post(
-          `${api}?api=signin&patientemail=${values.email}@gmail.com&pasword1=${values.password}`
+          `${api}?api=signin&patientemail=${values.email}&pasword1=${values.password}`
         );
         console.log(data);
         if (data === 'incorrect credentials') {
@@ -64,8 +66,8 @@ const Login = (props: Props) => {
           });
           return;
         }
-
-        // router.push('/home');
+        setId(data);
+        router.push('/home');
       } catch (error) {
         console.log(error);
         Toast.show({

@@ -13,29 +13,42 @@ import { FontAwesome } from '@expo/vector-icons';
 import { colors } from '../../constants/Colors';
 import { useState } from 'react';
 import { SeeAll } from './SeeAll';
-
+import { useRouter } from 'expo-router';
+import { useComingSessions } from '@/lib/tanstack/queries';
+import { useAuth } from '@/lib/zustand/auth';
+import { ErrorComponent } from '../Ui/Error';
+import { Loading } from '../Ui/Loading';
+import { UpComingSessions } from '@/types';
+import { format } from 'date-fns';
+import * as Linking from 'expo-linking';
 type Props = {};
 
-const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-const threeItems = array.slice(0, 3);
 export const AppointmentCard = ({}: Props): JSX.Element => {
+  const { id } = useAuth();
+  const { data, isPending, refetch, isError, isPaused } = useComingSessions(id);
   const [currentIndex, setCurrentIndex] = useState<number | null>(0);
-  console.log('🚀 ~ AppointmentCard ~ currentIndex:', currentIndex);
+  const router = useRouter();
+  if (isError || isPaused) {
+    return <ErrorComponent refetch={refetch} />;
+  }
+  if (isPending) {
+    return <Loading />;
+  }
+  console.log(data?.length);
 
   return (
     <>
       <View style={{ paddingRight: 20 }}>
         <SeeAll
           text="Appointments"
-          onPress={() => {}}
-          counter={array.length}
+          onPress={() => router.push('/(app)/(tabs)/two')}
           subText="See all"
         />
       </View>
       <FlatList
-        data={threeItems}
+        data={data.slice(0, 3)}
         keyExtractor={(item, index) => index?.toString()}
-        renderItem={({ item }) => <AppointmentCardsItem />}
+        renderItem={({ item }) => <AppointmentCardsItem item={item} />}
         horizontal
         showsHorizontalScrollIndicator={false}
         ItemSeparatorComponent={() => <View style={{ width: 20 }} />}
@@ -55,9 +68,9 @@ export const AppointmentCard = ({}: Props): JSX.Element => {
         }}
         ListEmptyComponent={() => <ListEmptyComponent />}
       />
-      {threeItems.length > 0 && (
+      {data?.length > 0 && (
         <HStack justifyContent="center" gap={5} mt={10}>
-          {threeItems.map((_, index) => {
+          {data?.splice(0, 3).map((_, index) => {
             return (
               <View
                 style={{
@@ -79,26 +92,32 @@ export const AppointmentCard = ({}: Props): JSX.Element => {
 
 const styles = StyleSheet.create({});
 
-const AppointmentCardsItem = () => {
+const AppointmentCardsItem = ({ item }: { item: UpComingSessions }) => {
   const { width } = useWindowDimensions();
   const itemWidth = width * 0.8;
+  const onPress = () => {
+    Linking.openURL(item?.meetingLink);
+  };
   return (
     <VStack bg={colors.textGreen} p={20} w={itemWidth} borderRadius={10}>
       <HStack alignItems="center" gap={10} mb={20}>
-        <Image
-          source={require('../../assets/images/doc.png')}
-          style={{ width: 50, height: 50 }}
-          contentFit="contain"
-        />
         <VStack>
           <MyText
-            text="Dr. Julia Chang"
+            text={item?.doctorName}
             style={{ fontSize: 18, color: 'white', fontFamily: 'PoppinsBold' }}
           />
           <MyText
-            text="General Practitioner"
+            text={item?.doctorEmail}
             style={{
               fontSize: 13,
+              color: 'white',
+              fontFamily: 'Poppins',
+            }}
+          />
+          <MyText
+            text={item?.doctorPhone}
+            style={{
+              fontSize: 11,
               color: 'white',
               fontFamily: 'Poppins',
             }}
@@ -116,17 +135,26 @@ const AppointmentCardsItem = () => {
         <HStack gap={5} alignItems="center">
           <FontAwesome name="calendar" color="white" size={13} />
           <MyText
-            text="16th July, 2024"
+            text={format(item?.date, 'yyyy-MM-dd')}
             style={{ fontSize: 10, color: 'white', fontFamily: 'Poppins' }}
           />
         </HStack>
         <HStack gap={5} alignItems="center">
           <FontAwesome name="clock-o" color="white" size={13} />
           <MyText
-            text="10:30 AM - 11:30 AM"
+            text={format(item?.sessionStartTimex, 'hh:mm a')}
             style={{ fontSize: 10, color: 'white', fontFamily: 'Poppins' }}
           />
         </HStack>
+        <Pressable
+          onPress={onPress}
+          style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1, padding: 4 }]}
+        >
+          <MyText
+            text={'Meeting link'}
+            style={{ fontSize: 10, color: 'white', fontFamily: 'Poppins' }}
+          />
+        </Pressable>
       </HStack>
     </VStack>
   );

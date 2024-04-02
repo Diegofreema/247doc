@@ -23,7 +23,7 @@ export const SeeAll = ({
           text={text}
           style={{ fontFamily: 'PoppinsBold', fontSize: 15 }}
         />
-        {counter && (
+        {/* {counter && (
           <View
             style={{
               width: 20,
@@ -43,7 +43,7 @@ export const SeeAll = ({
               }}
             />
           </View>
-        )}
+        )} */}
       </HStack>
       {subText && (
         <Pressable

@@ -2,10 +2,17 @@ import { StyleSheet, Text, View } from 'react-native';
 import React, { useEffect } from 'react';
 import { Redirect, Stack } from 'expo-router';
 import { useAuth } from '@/lib/zustand/auth';
-
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
 type Props = {};
 
 const Layout = (props: Props) => {
+  const queryClient = new QueryClient();
   const { id, getId } = useAuth();
   useEffect(() => {
     getId();
@@ -14,7 +21,12 @@ const Layout = (props: Props) => {
     return <Redirect href="/" />;
   }
   return (
-    <Stack screenOptions={{ headerShown: false }} initialRouteName="onboard" />
+    <QueryClientProvider client={queryClient}>
+      <Stack
+        screenOptions={{ headerShown: false }}
+        initialRouteName="onboard"
+      />
+    </QueryClientProvider>
   );
 };
 
