@@ -11,6 +11,7 @@ import { Doctors } from '@/types';
 import { MyText } from '../Ui/MyText';
 import { useRouter } from 'expo-router';
 import { MyButton } from '../Ui/MyButton';
+import { format } from 'date-fns';
 type Props = {
   cat: string;
 };
@@ -83,8 +84,10 @@ const styles = StyleSheet.create({});
 
 const DoctorCard = ({ item }: { item: Doctors }) => {
   const router = useRouter();
+  const { onClose } = useShowBottom();
   const onPress = () => {
     router.push(`/doctor/${item?.sessionId}`);
+    onClose();
   };
 
   return (
@@ -101,10 +104,24 @@ const DoctorCard = ({ item }: { item: Doctors }) => {
             text={item?.Doctor}
             style={{ fontFamily: 'PoppinsBold', fontSize: 18 }}
           />
-          <MyText
-            text={item?.categoryName}
-            style={{ fontFamily: 'PoppinsMedium', fontSize: 12, color: 'gray' }}
-          />
+          <HStack alignItems="center" gap={10}>
+            <MyText
+              text={item?.categoryName}
+              style={{
+                fontFamily: 'PoppinsMedium',
+                fontSize: 12,
+                color: 'gray',
+              }}
+            />
+            <MyText
+              text={item?.Startime}
+              style={{
+                fontFamily: 'PoppinsMedium',
+                fontSize: 12,
+                color: 'gray',
+              }}
+            />
+          </HStack>
         </VStack>
       </HStack>
       <VStack px={15}>

@@ -334,7 +334,6 @@ const signUp = (props: Props) => {
           </>
           <>
             <TextInput
-              secureTextEntry
               value={password}
               placeholder="Password"
               onChangeText={handleChange('password')}
@@ -348,7 +347,6 @@ const signUp = (props: Props) => {
           <>
             <TextInput
               value={confirmPassword}
-              secureTextEntry
               placeholder="Confirm Password"
               onChangeText={handleChange('confirmPassword')}
             />

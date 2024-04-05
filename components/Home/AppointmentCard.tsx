@@ -135,14 +135,14 @@ const AppointmentCardsItem = ({ item }: { item: UpComingSessions }) => {
         <HStack gap={5} alignItems="center">
           <FontAwesome name="calendar" color="white" size={13} />
           <MyText
-            text={format(item?.date, 'yyyy-MM-dd')}
+            text={item?.date}
             style={{ fontSize: 10, color: 'white', fontFamily: 'Poppins' }}
           />
         </HStack>
         <HStack gap={5} alignItems="center">
           <FontAwesome name="clock-o" color="white" size={13} />
           <MyText
-            text={format(item?.sessionStartTimex, 'hh:mm a')}
+            text={item?.sessionStartTimex}
             style={{ fontSize: 10, color: 'white', fontFamily: 'Poppins' }}
           />
         </HStack>

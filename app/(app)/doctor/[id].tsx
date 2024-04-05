@@ -14,6 +14,8 @@ import { Paystack, paystackProps } from 'react-native-paystack-webview';
 import axios from 'axios';
 import { useAuth } from '@/lib/zustand/auth';
 import Toast from 'react-native-toast-message';
+import { NavHeader } from '@/components/Ui/NavHeader';
+import { useQueryClient } from '@tanstack/react-query';
 type Props = {};
 
 const DoctorDetails = (props: Props) => {
@@ -22,6 +24,7 @@ const DoctorDetails = (props: Props) => {
   const [sessionFee, setSessionFee] = useState('');
   const [paymentRef, setPaymentRef] = useState('');
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { id: userId } = useAuth();
   const { data, isPending, refetch, isError, isPaused } = useDoctor(id);
   const paystackWebViewRef = useRef<paystackProps.PayStackRef>();
@@ -64,7 +67,7 @@ const DoctorDetails = (props: Props) => {
       const { data: dataRes } = await axios.post(
         `https://247docapi.netpro.software/api.aspx?api=book&sessionid=${id}&patientref=${userId}`
       );
-
+      console.log(dataRes);
       if (
         dataRes ===
         'This  session has been booked. Please try a different session'
@@ -94,11 +97,20 @@ const DoctorDetails = (props: Props) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'white', marginHorizontal: 20 }}>
-      <View style={{ marginTop: 20 }} />
+      <NavHeader />
+
       <Paystack
         paystackKey="pk_live_34dcb421bb4e9e6f20fdf2c993f2b44c9e436fbe"
         billingEmail={email}
-        amount={paymentRef}
+        amount={sessionFee}
+        channels={[
+          'card',
+          'bank',
+          'ussd',
+          'mobile_money',
+          'qr',
+          'bank_transfer',
+        ]}
         onCancel={(e) => {
           // handle response here
           Toast.show({
@@ -117,7 +129,9 @@ const DoctorDetails = (props: Props) => {
             text1: 'Payment was successful',
             position: 'top',
           });
-
+          queryClient.invalidateQueries({
+            queryKey: ['upcoming_sessions', id],
+          });
           router.push('/two');
         }}
         // @ts-ignore
@@ -129,9 +143,9 @@ const DoctorDetails = (props: Props) => {
         <MyText
           text={data?.bio}
           style={{
-            textAlign: 'justify',
+            textAlign: 'left',
             fontFamily: 'Poppins',
-            color: '#ccc',
+            color: '#000',
           }}
         />
       </VStack>
@@ -165,13 +179,13 @@ const DoctorCard = ({ item }: { item: Doctor }) => {
           />
         </VStack>
       </HStack>
-      <HStack justifyContent="space-between">
+      <HStack justifyContent="space-between" px={15}>
         <MyText
           text={item?.Startime}
           style={{ fontFamily: 'PoppinsBold', fontSize: 15, color: 'gray' }}
         />
         <MyText
-          text={item?.Price}
+          text={`₦${item?.Price}`}
           style={{ fontFamily: 'PoppinsBold', fontSize: 15, color: 'gray' }}
         />
       </HStack>

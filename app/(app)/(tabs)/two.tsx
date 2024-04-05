@@ -22,7 +22,7 @@ import { MyText } from '@/components/Ui/MyText';
 import { FontAwesome } from '@expo/vector-icons';
 type Props = {};
 
-export const AppointmentCard = ({}: Props): JSX.Element => {
+const Appointment = ({}: Props): JSX.Element => {
   const { id } = useAuth();
   const { data, isPending, refetch, isError, isPaused } = useComingSessions(id);
 
@@ -47,6 +47,8 @@ export const AppointmentCard = ({}: Props): JSX.Element => {
         paddingRight: 10,
         backgroundColor: 'transparent',
         flexGrow: 1,
+        marginHorizontal: 20,
+        alignItems: 'center',
       }}
       style={{ backgroundColor: 'transparent' }}
       ListEmptyComponent={() => <ListEmptyComponent />}
@@ -55,15 +57,13 @@ export const AppointmentCard = ({}: Props): JSX.Element => {
 };
 
 const styles = StyleSheet.create({});
-
+export default Appointment;
 const AppointmentCardsItem = ({ item }: { item: UpComingSessions }) => {
-  const { width } = useWindowDimensions();
-  const itemWidth = width * 0.8;
   const onPress = () => {
     Linking.openURL(item?.meetingLink);
   };
   return (
-    <VStack bg={colors.textGreen} p={20} w={itemWidth} borderRadius={10}>
+    <VStack bg={colors.textGreen} p={20} w={'100%'} borderRadius={10}>
       <HStack alignItems="center" gap={10} mb={20}>
         <VStack>
           <MyText
@@ -99,14 +99,14 @@ const AppointmentCardsItem = ({ item }: { item: UpComingSessions }) => {
         <HStack gap={5} alignItems="center">
           <FontAwesome name="calendar" color="white" size={13} />
           <MyText
-            text={format(item?.date, 'yyyy-MM-dd')}
+            text={item?.date}
             style={{ fontSize: 10, color: 'white', fontFamily: 'Poppins' }}
           />
         </HStack>
         <HStack gap={5} alignItems="center">
           <FontAwesome name="clock-o" color="white" size={13} />
           <MyText
-            text={format(item?.sessionStartTimex, 'hh:mm a')}
+            text={item?.sessionStartTimex}
             style={{ fontSize: 10, color: 'white', fontFamily: 'Poppins' }}
           />
         </HStack>
@@ -127,7 +127,7 @@ const AppointmentCardsItem = ({ item }: { item: UpComingSessions }) => {
 const ListEmptyComponent = () => {
   const { width } = useWindowDimensions();
   return (
-    <VStack bg={colors.textGreen} p={20} w={width - 35} borderRadius={10}>
+    <VStack bg={colors.textGreen} p={20} w={'100%'} borderRadius={10}>
       <HStack alignItems="center" gap={10} mb={20}>
         <VStack>
           <MyText
@@ -162,7 +162,7 @@ appointment at the moment"
         </VStack>
 
         <Image
-          source={require('../../assets/images/empty.png')}
+          source={require('../../../assets/images/empty.png')}
           style={{ width: 100, height: 100 }}
           contentFit="contain"
         />

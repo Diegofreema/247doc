@@ -9,6 +9,7 @@ import { config } from '@gluestack-ui/config';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
+import * as Updates from 'expo-updates';
 import Toast, {
   BaseToast,
   ErrorToast,
@@ -78,7 +79,22 @@ export default function RootLayout() {
   useEffect(() => {
     if (error) throw error;
   }, [error]);
+  useEffect(() => {
+    async function onFetchUpdateAsync() {
+      try {
+        const update = await Updates.checkForUpdateAsync();
 
+        if (update.isAvailable) {
+          await Updates.fetchUpdateAsync();
+          await Updates.reloadAsync();
+        }
+      } catch (error) {
+        // You can also add an alert() to see the error message in case of an error when fetching updates.
+        console.log(error);
+      }
+    }
+    onFetchUpdateAsync();
+  }, []);
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();

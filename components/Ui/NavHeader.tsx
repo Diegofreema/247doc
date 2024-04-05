@@ -12,7 +12,7 @@ export const NavHeader = ({}: Props): JSX.Element => {
     router.back();
   };
   return (
-    <HStack mt={20}>
+    <HStack my={10}>
       <Pressable
         onPress={navigate}
         style={({ pressed }) => [

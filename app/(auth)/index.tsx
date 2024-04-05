@@ -116,6 +116,7 @@ const Login = (props: Props) => {
             <>
               <TextInput
                 value={password}
+                secureTextEntry
                 placeholder="Password"
                 onChangeText={handleChange('password')}
               />
