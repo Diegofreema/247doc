@@ -7,6 +7,7 @@ import {
   FlatList,
   useWindowDimensions,
   Pressable,
+  Platform,
 } from 'react-native';
 
 import { UpComingSessions } from '@/types';
@@ -38,17 +39,27 @@ const Appointment = ({}: Props): JSX.Element => {
   return (
     <FlatList
       data={data}
+      ListHeaderComponent={() => (
+        <MyText
+          text="Appointments"
+          style={{
+            fontSize: 20,
+            color: 'black',
+            fontFamily: 'PoppinsBold',
+          }}
+        />
+      )}
       keyExtractor={(item, index) => index?.toString()}
       renderItem={({ item }) => <AppointmentCardsItem item={item} />}
       showsHorizontalScrollIndicator={false}
-      ItemSeparatorComponent={() => <View style={{ width: 20 }} />}
+      ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
       contentContainerStyle={{
         paddingVertical: 20,
-        paddingRight: 10,
+        paddingHorizontal: 15,
         backgroundColor: 'transparent',
         flexGrow: 1,
-        marginHorizontal: 20,
-        alignItems: 'center',
+
+        gap: 20,
       }}
       style={{ backgroundColor: 'transparent' }}
       ListEmptyComponent={() => <ListEmptyComponent />}
@@ -61,6 +72,15 @@ export default Appointment;
 const AppointmentCardsItem = ({ item }: { item: UpComingSessions }) => {
   const onPress = () => {
     Linking.openURL(item?.meetingLink);
+  };
+  const openDialScreen = () => {
+    let number = '';
+    if (Platform.OS === 'ios') {
+      number = 'telprompt:${item?.doctorPhone}';
+    } else {
+      number = 'tel:${item?.doctorPhone}';
+    }
+    Linking.openURL(number);
   };
   return (
     <VStack bg={colors.textGreen} p={20} w={'100%'} borderRadius={10}>
@@ -78,14 +98,22 @@ const AppointmentCardsItem = ({ item }: { item: UpComingSessions }) => {
               fontFamily: 'Poppins',
             }}
           />
-          <MyText
-            text={item?.doctorPhone}
-            style={{
-              fontSize: 11,
-              color: 'white',
-              fontFamily: 'Poppins',
-            }}
-          />
+          <Pressable
+            onPress={openDialScreen}
+            style={({ pressed }) => ({
+              opacity: pressed ? 0.5 : 1,
+              paddingVertical: 4,
+            })}
+          >
+            <MyText
+              text={item?.doctorPhone}
+              style={{
+                fontSize: 11,
+                color: 'white',
+                fontFamily: 'Poppins',
+              }}
+            />
+          </Pressable>
         </VStack>
       </HStack>
 
@@ -112,11 +140,22 @@ const AppointmentCardsItem = ({ item }: { item: UpComingSessions }) => {
         </HStack>
         <Pressable
           onPress={onPress}
-          style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1, padding: 4 }]}
+          style={({ pressed }) => [
+            {
+              opacity: pressed ? 0.5 : 1,
+              padding: 4,
+              backgroundColor: colors.textGreen,
+              borderRadius: 5,
+            },
+          ]}
         >
           <MyText
             text={'Meeting link'}
-            style={{ fontSize: 10, color: 'white', fontFamily: 'Poppins' }}
+            style={{
+              fontSize: 10,
+              color: 'white',
+              fontFamily: 'PoppinsBold',
+            }}
           />
         </Pressable>
       </HStack>

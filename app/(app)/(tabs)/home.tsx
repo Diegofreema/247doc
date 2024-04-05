@@ -144,7 +144,7 @@ const SubCat = ({
       contentContainerStyle={{ paddingBottom: 20, gap: 10 }}
       ListEmptyComponent={() => (
         <MyText
-          text="No data found"
+          text="No doctors available for this category"
           style={{ fontFamily: 'PoppinsBold', textAlign: 'center' }}
         />
       )}

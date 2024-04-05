@@ -25,7 +25,9 @@ type Props = {};
 
 export const AppointmentCard = ({}: Props): JSX.Element => {
   const { id } = useAuth();
-  const { data, isPending, refetch, isError, isPaused } = useComingSessions(id);
+  const { data, isPending, refetch, isError, isPaused, isFetching } =
+    useComingSessions(id);
+  console.log('🚀 ~ AppointmentCard ~ isFetching:', isFetching);
   const [currentIndex, setCurrentIndex] = useState<number | null>(0);
   const router = useRouter();
   if (isError || isPaused) {
@@ -34,7 +36,8 @@ export const AppointmentCard = ({}: Props): JSX.Element => {
   if (isPending) {
     return <Loading />;
   }
-  console.log(data?.length);
+  console.log(data?.length, 'id', id);
+  console.log(data);
 
   return (
     <>
@@ -94,12 +97,12 @@ const styles = StyleSheet.create({});
 
 const AppointmentCardsItem = ({ item }: { item: UpComingSessions }) => {
   const { width } = useWindowDimensions();
-  const itemWidth = width * 0.8;
+
   const onPress = () => {
     Linking.openURL(item?.meetingLink);
   };
   return (
-    <VStack bg={colors.textGreen} p={20} w={itemWidth} borderRadius={10}>
+    <VStack bg={colors.textGreen} p={20} w={width * 0.9} borderRadius={10}>
       <HStack alignItems="center" gap={10} mb={20}>
         <VStack>
           <MyText
@@ -148,11 +151,22 @@ const AppointmentCardsItem = ({ item }: { item: UpComingSessions }) => {
         </HStack>
         <Pressable
           onPress={onPress}
-          style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1, padding: 4 }]}
+          style={({ pressed }) => [
+            {
+              opacity: pressed ? 0.5 : 1,
+              padding: 4,
+              backgroundColor: colors.textGreen,
+              borderRadius: 5,
+            },
+          ]}
         >
           <MyText
             text={'Meeting link'}
-            style={{ fontSize: 10, color: 'white', fontFamily: 'Poppins' }}
+            style={{
+              fontSize: 10,
+              color: 'white',
+              fontFamily: 'PoppinsBold',
+            }}
           />
         </Pressable>
       </HStack>

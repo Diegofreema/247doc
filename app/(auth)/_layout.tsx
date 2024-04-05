@@ -8,6 +8,7 @@ type Props = {};
 
 const AuthLayout = (props: Props) => {
   const { id, getId } = useAuth();
+  console.log('🚀 ~ AuthLayout ~ id:', id);
   useEffect(() => {
     getId();
   }, []);

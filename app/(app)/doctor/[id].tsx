@@ -20,6 +20,7 @@ type Props = {};
 
 const DoctorDetails = (props: Props) => {
   const { id } = useLocalSearchParams<{ id: string }>();
+
   const [email, setEmail] = useState('');
   const [sessionFee, setSessionFee] = useState('');
   const [paymentRef, setPaymentRef] = useState('');
@@ -96,11 +97,12 @@ const DoctorDetails = (props: Props) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'white', marginHorizontal: 20 }}>
+    <View style={{ flex: 1, backgroundColor: 'white', paddingHorizontal: 20 }}>
       <NavHeader />
 
       <Paystack
-        paystackKey="pk_live_34dcb421bb4e9e6f20fdf2c993f2b44c9e436fbe"
+        // paystackKey="pk_live_34dcb421bb4e9e6f20fdf2c993f2b44c9e436fbe"
+        paystackKey="pk_test_ed76c81770ed30bfd8734bd6086aa6e2e2057088"
         billingEmail={email}
         amount={sessionFee}
         channels={[
@@ -128,9 +130,10 @@ const DoctorDetails = (props: Props) => {
             type: 'transparentToast',
             text1: 'Payment was successful',
             position: 'top',
+            swipeable: true,
           });
           queryClient.invalidateQueries({
-            queryKey: ['upcoming_sessions', id],
+            queryKey: ['upcoming_sessions', userId],
           });
           router.push('/two');
         }}
@@ -139,17 +142,17 @@ const DoctorDetails = (props: Props) => {
         ref={paystackWebViewRef}
       />
       <DoctorCard item={data} />
-      <VStack mt={20}>
+      <VStack mt={20} mb={20}>
         <MyText
           text={data?.bio}
           style={{
-            textAlign: 'left',
-            fontFamily: 'Poppins',
+            fontFamily: 'PoppinsBold',
             color: '#000',
+            paddingRight: 20,
           }}
         />
       </VStack>
-      <VStack mt={'auto'} mb={30}>
+      <VStack mt={30}>
         <MyButton text="Book Appointment" onPress={onStartTransaction} />
       </VStack>
     </View>
