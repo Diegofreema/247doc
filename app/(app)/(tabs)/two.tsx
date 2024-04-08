@@ -25,10 +25,18 @@ type Props = {};
 
 const Appointment = ({}: Props): JSX.Element => {
   const { id } = useAuth();
-  const { data, isPending, refetch, isError, isPaused } = useComingSessions(id);
+  const {
+    data,
+    isPending,
+    refetch,
+    isError,
+    isPaused,
+    isRefetching,
+    isRefetchError,
+  } = useComingSessions(id);
 
   const router = useRouter();
-  if (isError || isPaused) {
+  if (isError || isPaused || isRefetchError) {
     return <ErrorComponent refetch={refetch} />;
   }
   if (isPending) {
@@ -39,6 +47,8 @@ const Appointment = ({}: Props): JSX.Element => {
   return (
     <FlatList
       data={data}
+      onRefresh={refetch}
+      refreshing={isRefetching}
       ListHeaderComponent={() => (
         <MyText
           text="Appointments"

@@ -31,18 +31,14 @@ type Props = {};
 const defaultDateOfBirth = new Date(
   new Date().setFullYear(new Date().getFullYear() - 18)
 );
-const passwordRegExp =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$/;
+
 const validationSchema = yup.object().shape({
   firstName: yup.string().required('First name is required'),
   lastName: yup.string().required('Last name is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
   password: yup
     .string()
-    .matches(
-      passwordRegExp,
-      'Password must include at least one capital letter, one number, one lower case letter, and one special character'
-    )
+    .matches(/^[a-zA-Z0-9]+$/, 'Password can only contain letters and numbers')
     .min(8, 'Password must be at least 8 characters')
     .required('Password is required'),
   confirmPassword: yup

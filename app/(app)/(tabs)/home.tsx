@@ -19,12 +19,15 @@ import Animated, { SlideInLeft } from 'react-native-reanimated';
 import { useAuth } from '@/lib/zustand/auth';
 import { BottomComponent } from '@/components/Home/BottomComponent';
 import { useShowBottom } from '@/lib/zustand/showBottom';
+import { Icon } from '@rneui/themed';
+import { FontAwesome } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 export default function TabOneScreen() {
   const [category, setCategory] = useState('All');
   const [subCat, setSubCat] = useState('');
-
-  const { id } = useAuth();
+  const router = useRouter();
+  const { id, clearId } = useAuth();
   console.log(id);
   const { onOpen } = useShowBottom();
   const { data, isPending, refetch, isError, isPaused } = useGetCategories();
@@ -54,11 +57,26 @@ export default function TabOneScreen() {
     onOpen();
     setSubCat(item);
   };
+  const logOut = () => {
+    clearId();
+    router.replace('/');
+  };
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <VStack px={20}>
         <VStack mt={20} gap={10}>
-          <BoldHeader text="247Doc" />
+          <HStack justifyContent="space-between">
+            <BoldHeader text="247Doc" />
+
+            <Pressable
+              onPress={logOut}
+              style={({ pressed }) => [
+                { opacity: pressed ? 0.5 : 1, paddingHorizontal: 5 },
+              ]}
+            >
+              <FontAwesome name="sign-out" size={24} color="black" />
+            </Pressable>
+          </HStack>
 
           {/* <Pressable
             onPress={onPress}

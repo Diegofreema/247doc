@@ -7,6 +7,10 @@ import {
   FlatList,
   useWindowDimensions,
   Pressable,
+  ScrollView,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+  RefreshControl,
 } from 'react-native';
 import { MyText } from '../Ui/MyText';
 import { FontAwesome } from '@expo/vector-icons';
@@ -25,8 +29,16 @@ type Props = {};
 
 export const AppointmentCard = ({}: Props): JSX.Element => {
   const { id } = useAuth();
-  const { data, isPending, refetch, isError, isPaused, isFetching } =
-    useComingSessions(id);
+  const {
+    data,
+    isPending,
+    refetch,
+    isError,
+    isPaused,
+    isFetching,
+    isRefetchError,
+    isRefetching,
+  } = useComingSessions(id);
   console.log('🚀 ~ AppointmentCard ~ isFetching:', isFetching);
   const [currentIndex, setCurrentIndex] = useState<number | null>(0);
   const router = useRouter();
@@ -38,7 +50,16 @@ export const AppointmentCard = ({}: Props): JSX.Element => {
   }
   console.log(data?.length, 'id', id);
   console.log(data);
-
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    console.log('🚀 ~ handleScroll ~ event:', event.nativeEvent);
+    event.persist();
+    const contentOffset = event.nativeEvent.contentOffset;
+    const viewSize = event.nativeEvent.layoutMeasurement;
+    const slideSize = viewSize.width;
+    const index = Math.floor(contentOffset.x / slideSize);
+    console.log('🚀 ~ handleScroll ~ index:', index);
+    // setCurrentIndex(index);
+  };
   return (
     <>
       <View style={{ paddingRight: 20 }}>
@@ -48,30 +69,29 @@ export const AppointmentCard = ({}: Props): JSX.Element => {
           subText="See all"
         />
       </View>
-      <FlatList
-        data={data.slice(0, 3)}
-        keyExtractor={(item, index) => index?.toString()}
-        renderItem={({ item }) => <AppointmentCardsItem item={item} />}
-        horizontal
+
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
+        }
+        scrollEventThrottle={16}
+        // onScroll={handleScroll}
         showsHorizontalScrollIndicator={false}
-        ItemSeparatorComponent={() => <View style={{ width: 20 }} />}
+        horizontal
         contentContainerStyle={{
           paddingVertical: 20,
           paddingRight: 10,
           backgroundColor: 'transparent',
+          gap: 10,
         }}
-        style={{ backgroundColor: 'transparent' }}
-        onViewableItemsChanged={({ changed, viewableItems }) => {
-          if (viewableItems.length > 0) {
-            setCurrentIndex(viewableItems[0].index);
-          }
-        }}
-        viewabilityConfig={{
-          itemVisiblePercentThreshold: 70,
-        }}
-        ListEmptyComponent={() => <ListEmptyComponent />}
-      />
-      {data?.length > 0 && (
+      >
+        {data?.length === 0 && <ListEmptyComponent />}
+        {data?.length > 0 &&
+          data?.slice(0, 3).map((item, index) => {
+            return <AppointmentCardsItem key={index} item={item} />;
+          })}
+      </ScrollView>
+      {/* {data?.length > 0 && (
         <HStack justifyContent="center" gap={5} mt={10}>
           {data?.splice(0, 3).map((_, index) => {
             return (
@@ -88,7 +108,7 @@ export const AppointmentCard = ({}: Props): JSX.Element => {
             );
           })}
         </HStack>
-      )}
+      )} */}
     </>
   );
 };

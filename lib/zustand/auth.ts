@@ -18,5 +18,8 @@ export const useAuth = create<Props>((set) => ({
     set({ id: id });
     SecureStore.setItem('id', id);
   },
-  clearId: () => set({ id: null }),
+  clearId: async () => {
+    set({ id: null });
+    await SecureStore.deleteItemAsync('id');
+  },
 }));
