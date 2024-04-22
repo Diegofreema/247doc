@@ -31,16 +31,18 @@ type Props = {};
 const defaultDateOfBirth = new Date(
   new Date().setFullYear(new Date().getFullYear() - 18)
 );
-
+const passwordRegExp =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$/;
 const validationSchema = yup.object().shape({
   firstName: yup.string().required('First name is required'),
   lastName: yup.string().required('Last name is required'),
   email: yup.string().email('Invalid email').required('Email is required'),
   password: yup
     .string()
-    .matches(/^[a-zA-Z0-9]+$/, 'Password can only contain letters and numbers')
-    .min(8, 'Password must be at least 8 characters')
-    .required('Password is required'),
+    .matches(
+      passwordRegExp,
+      'Password must include at least one capital letter, one number, one lower case letter, and one special character'
+    ),
   confirmPassword: yup
     .string()
     .oneOf([yup.ref('password')], 'Passwords must match')
@@ -91,9 +93,12 @@ const signUp = (props: Props) => {
       } = values;
 
       const fullName = `${firstName} ${lastName}`;
+      const formattedPassword = password
+        .replace(/[#?\/\\%&]/g, '')
+        .replace(/:/g, '');
       try {
         const { data } = await axios.post(
-          `${api}?api=createaccount&patientemail=${email}&patientgender=${gender}&patientfname=${gender}&patientdob=${dateOfBirth}&patientphone=${phoneNumber}&patientadres=${address}&pasword1=${password}&patientlname=${fullName}`
+          `${api}?api=createaccount&patientemail=${email}&patientgender=${gender}&patientfname=${gender}&patientdob=${dateOfBirth}&patientphone=${phoneNumber}&patientadres=${address}&pasword1=${formattedPassword}&patientlname=${fullName}`
         );
 
         if (data === 'Success') {

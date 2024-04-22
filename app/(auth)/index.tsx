@@ -1,5 +1,5 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useRouter } from 'expo-router';
 import { VStack } from '@gluestack-ui/themed';
 import { NavHeader } from '@/components/Ui/NavHeader';
@@ -25,6 +25,7 @@ const validationSchema = yup.object().shape({
 });
 const Login = (props: Props) => {
   const router = useRouter();
+  const [secured, setSecured] = useState(true);
   const { setId } = useAuth();
   const {
     handleChange,
@@ -42,9 +43,12 @@ const Login = (props: Props) => {
     },
     // validationSchema,
     onSubmit: async (values) => {
+      const formattedPassword = values.password
+        .replace(/[#?\/\\%&]/g, '')
+        .replace(/:/g, '');
       try {
         const { data } = await axios.post(
-          `${api}?api=signin&patientemail=${values.email}&pasword1=${values.password}`
+          `${api}?api=signin&patientemail=${values.email}&pasword1=${formattedPassword}`
         );
         console.log(data);
         if (data === 'incorrect credentials') {
@@ -116,9 +120,12 @@ const Login = (props: Props) => {
             <>
               <TextInput
                 value={password}
-                secureTextEntry
+                secureTextEntry={secured}
                 placeholder="Password"
                 onChangeText={handleChange('password')}
+                password
+                secured={secured}
+                setSecured={setSecured}
               />
 
               {errors.password && touched.password && (

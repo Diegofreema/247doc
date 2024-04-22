@@ -9,7 +9,7 @@
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
@@ -17,16 +17,21 @@
     ],
     "ios": {
       "supportsTablet": true,
+      "buildNumber": "1.0.0",
+      "runtimeVersion": "1.0.0",
       "config": {
         "usesNonExemptEncryption": false
-      }
+      },
+      "bundleIdentifier": "com.diegodark.247doc"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "acgcvv_chcvd_a5657_agasg.t"
+      "package": "acgcvv_chcvd_a5657_agasg.t",
+      "versionCode": 1,
+      "runtimeVersion": "1.0.0"
     },
     "web": {
       "bundler": "metro",
@@ -40,6 +45,17 @@
         "expo-updates",
         {
           "username": "diegodark"
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enableProguardInReleaseBuilds": true,
+            "extraProguardRules": "-keep public class com.horcrux.svg.** {*;}",
+            "allowBackup": false,
+            "enableShrinkResourcesInReleaseBuilds": true
+          }
         }
       ]
     ],

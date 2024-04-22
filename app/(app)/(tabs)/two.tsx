@@ -21,10 +21,15 @@ import { useRouter } from 'expo-router';
 import { colors } from '@/constants/Colors';
 import { MyText } from '@/components/Ui/MyText';
 import { FontAwesome } from '@expo/vector-icons';
+import { DeleteModal } from '@/components/Ui/Modals/deleteModal';
+import { useState } from 'react';
+import { useDeleteProfile } from '@/lib/tanstack/mutation';
+import { MyButton } from '@/components/Ui/MyButton';
 type Props = {};
 
 const Appointment = ({}: Props): JSX.Element => {
   const { id } = useAuth();
+  const [isVisible, setIsVisible] = useState(false);
   const {
     data,
     isPending,
@@ -35,6 +40,8 @@ const Appointment = ({}: Props): JSX.Element => {
     isRefetchError,
   } = useComingSessions(id);
 
+  const { mutate, isPending: isPendingDelete } = useDeleteProfile();
+
   const router = useRouter();
   if (isError || isPaused || isRefetchError) {
     return <ErrorComponent refetch={refetch} />;
@@ -43,37 +50,64 @@ const Appointment = ({}: Props): JSX.Element => {
     return <Loading />;
   }
   console.log(data?.length);
+  const onPress = () => {
+    setIsVisible(false);
+  };
 
+  const onDelete = () => {
+    mutate();
+  };
   return (
-    <FlatList
-      data={data}
-      onRefresh={refetch}
-      refreshing={isRefetching}
-      ListHeaderComponent={() => (
-        <MyText
-          text="Appointments"
-          style={{
-            fontSize: 20,
-            color: 'black',
-            fontFamily: 'PoppinsBold',
-          }}
-        />
-      )}
-      keyExtractor={(item, index) => index?.toString()}
-      renderItem={({ item }) => <AppointmentCardsItem item={item} />}
-      showsHorizontalScrollIndicator={false}
-      ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
-      contentContainerStyle={{
-        paddingVertical: 20,
-        paddingHorizontal: 15,
-        backgroundColor: 'transparent',
-        flexGrow: 1,
+    <>
+      <DeleteModal
+        isVisible={isVisible}
+        onPress={onPress}
+        onDelete={onDelete}
+        isPending={isPendingDelete}
+      />
+      <FlatList
+        data={data}
+        onRefresh={refetch}
+        refreshing={isRefetching}
+        ListHeaderComponent={() => (
+          <HStack justifyContent="space-between" alignItems="center">
+            <MyText
+              text="Appointments"
+              style={{
+                fontSize: 20,
+                color: 'black',
+                fontFamily: 'PoppinsBold',
+              }}
+            />
 
-        gap: 20,
-      }}
-      style={{ backgroundColor: 'transparent' }}
-      ListEmptyComponent={() => <ListEmptyComponent />}
-    />
+            <MyButton
+              style={{
+                height: 40,
+                padding: 1,
+                backgroundColor: 'red',
+              }}
+              textStyle={{ fontSize: 10, fontFamily: 'PoppinsBold' }}
+              text="Delete Profile"
+              onPress={() => setIsVisible(true)}
+            />
+          </HStack>
+        )}
+        keyExtractor={(item, index) => index?.toString()}
+        renderItem={({ item }) => <AppointmentCardsItem item={item} />}
+        showsHorizontalScrollIndicator={false}
+        ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+        contentContainerStyle={{
+          paddingVertical: 20,
+          paddingHorizontal: 15,
+          backgroundColor: 'transparent',
+          flexGrow: 1,
+
+          gap: 20,
+        }}
+        style={{ backgroundColor: 'transparent' }}
+        ListEmptyComponent={() => <ListEmptyComponent />}
+      />
+    </>
   );
 };
 
