@@ -50,8 +50,8 @@ const Login = (props: Props) => {
         const { data } = await axios.post(
           `${api}?api=signin&patientemail=${values.email}&pasword1=${formattedPassword}`
         );
-        console.log(data);
-        if (data === 'incorrect credentials') {
+        console.log(data?.result);
+        if (data?.result === 'incorrect credentials') {
           Toast.show({
             type: 'transparentToast',
             text1: 'Please try again',
@@ -61,7 +61,7 @@ const Login = (props: Props) => {
 
           return;
         }
-        if (data === "{'result' : 'failed'}") {
+        if (data.result === 'failed') {
           Toast.show({
             type: 'transparentToast',
             text1: 'Please try again',
@@ -70,7 +70,7 @@ const Login = (props: Props) => {
           });
           return;
         }
-        setId(data);
+        setId(data?.result);
         router.push('/home');
       } catch (error) {
         console.log(error);

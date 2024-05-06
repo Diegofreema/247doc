@@ -3,7 +3,6 @@ import { Image } from 'expo-image';
 import {
   StyleSheet,
   View,
-  Text,
   FlatList,
   useWindowDimensions,
   Pressable,
@@ -11,7 +10,6 @@ import {
 } from 'react-native';
 
 import { UpComingSessions } from '@/types';
-import { format } from 'date-fns';
 import * as Linking from 'expo-linking';
 import { useAuth } from '@/lib/zustand/auth';
 import { useComingSessions } from '@/lib/tanstack/queries';
@@ -29,7 +27,7 @@ type Props = {};
 
 const Appointment = ({}: Props): JSX.Element => {
   const { id } = useAuth();
-  const [isVisible, setIsVisible] = useState(false);
+
   const {
     data,
     isPending,
@@ -40,8 +38,6 @@ const Appointment = ({}: Props): JSX.Element => {
     isRefetchError,
   } = useComingSessions(id);
 
-  const { mutate, isPending: isPendingDelete } = useDeleteProfile();
-
   const router = useRouter();
   if (isError || isPaused || isRefetchError) {
     return <ErrorComponent refetch={refetch} />;
@@ -50,21 +46,9 @@ const Appointment = ({}: Props): JSX.Element => {
     return <Loading />;
   }
   console.log(data?.length);
-  const onPress = () => {
-    setIsVisible(false);
-  };
 
-  const onDelete = () => {
-    mutate();
-  };
   return (
     <>
-      <DeleteModal
-        isVisible={isVisible}
-        onPress={onPress}
-        onDelete={onDelete}
-        isPending={isPendingDelete}
-      />
       <FlatList
         data={data}
         onRefresh={refetch}
@@ -78,17 +62,6 @@ const Appointment = ({}: Props): JSX.Element => {
                 color: 'black',
                 fontFamily: 'PoppinsBold',
               }}
-            />
-
-            <MyButton
-              style={{
-                height: 40,
-                padding: 1,
-                backgroundColor: 'red',
-              }}
-              textStyle={{ fontSize: 10, fontFamily: 'PoppinsBold' }}
-              text="Delete Profile"
-              onPress={() => setIsVisible(true)}
             />
           </HStack>
         )}

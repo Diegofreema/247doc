@@ -19,7 +19,10 @@
       "channel": "preview"
     },
     "production": {
-      "channel": "production"
+      "channel": "production",
+      "env": {
+        "EXPO_PUBLIC_API": "https://247docapi.netpro.software/api.aspx"
+      }
     }
   },
   "submit": {

@@ -45,12 +45,12 @@ export const DeleteModal = ({
         >
           <MyText
             style={{
-              fontFamily: 'PoppinsBold',
+              fontFamily: 'PoppinsMedium',
               fontSize: 18,
               color: 'red',
               textAlign: 'center',
             }}
-            text="This process can not be undone"
+            text="This process can't be undone"
           />
           <MyText
             style={{

@@ -2,11 +2,9 @@ import { FlatList, Pressable, ScrollView, StyleSheet } from 'react-native';
 
 import { View } from '@/components/Themed';
 import { BoldHeader } from '@/components/Ui/BoldHeader';
-import { HStack, SearchIcon, VStack } from '@gluestack-ui/themed';
-import { TextInput } from '@/components/Ui/TextInput';
+import { HStack, VStack } from '@gluestack-ui/themed';
 import { AppointmentCard } from '@/components/Home/AppointmentCard';
 import { CategoryList } from '@/components/Home/Category';
-import { Doctors } from '@/components/Home/Doctors';
 import { useGetCategories, useGetSpecialists } from '@/lib/tanstack/queries';
 import { ErrorComponent } from '@/components/Ui/Error';
 import { Loading } from '@/components/Ui/Loading';
@@ -16,19 +14,18 @@ import { colors } from '@/constants/Colors';
 import { Subcategory } from '@/types';
 import { MyText } from '@/components/Ui/MyText';
 import Animated, { SlideInLeft } from 'react-native-reanimated';
-import { useAuth } from '@/lib/zustand/auth';
 import { BottomComponent } from '@/components/Home/BottomComponent';
 import { useShowBottom } from '@/lib/zustand/showBottom';
-import { Icon } from '@rneui/themed';
-import { FontAwesome } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import { MenuComponent } from '@/components/Home/Menu';
+import { DeleteModal } from '@/components/Ui/Modals/deleteModal';
+import { useDeleteProfile } from '@/lib/tanstack/mutation';
 
 export default function TabOneScreen() {
-  const [category, setCategory] = useState('All');
+  const [category, setCategory] = useState('Doctor');
   const [subCat, setSubCat] = useState('');
-  const router = useRouter();
-  const { id, clearId } = useAuth();
-  console.log(id);
+  const [visible, setVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const { mutate, isPending: isPendingDelete } = useDeleteProfile();
   const { onOpen } = useShowBottom();
   const { data, isPending, refetch, isError, isPaused } = useGetCategories();
   const {
@@ -38,6 +35,7 @@ export default function TabOneScreen() {
     isError: isErrorSpecialists,
     isPaused: isPausedSpecialists,
   } = useGetSpecialists(category);
+
   const handleRefetch = () => {
     refetch();
     refetchSpecialists();
@@ -49,7 +47,6 @@ export default function TabOneScreen() {
     return <Loading />;
   }
 
-  const onPress = () => {};
   const onSelect = (item: string) => {
     setCategory(item);
   };
@@ -57,25 +54,43 @@ export default function TabOneScreen() {
     onOpen();
     setSubCat(item);
   };
-  const logOut = () => {
-    clearId();
-    router.replace('/');
+
+  const openMenu = () => {
+    setVisible(true);
+  };
+
+  const closeMenu = () => {
+    setVisible(false);
+  };
+  const onCloseModal = () => {
+    setIsVisible(false);
+  };
+  const onDelete = () => {
+    mutate();
+  };
+
+  const onOpeDeleteModal = () => {
+    setIsVisible(true);
   };
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <DeleteModal
+        isVisible={isVisible}
+        onPress={onCloseModal}
+        onDelete={onDelete}
+        isPending={isPendingDelete}
+      />
       <VStack px={20}>
         <VStack mt={20} gap={10}>
           <HStack justifyContent="space-between">
             <BoldHeader text="247Doc" />
 
-            <Pressable
-              onPress={logOut}
-              style={({ pressed }) => [
-                { opacity: pressed ? 0.5 : 1, paddingHorizontal: 5 },
-              ]}
-            >
-              <FontAwesome name="sign-out" size={24} color="black" />
-            </Pressable>
+            <MenuComponent
+              visible={visible}
+              closeMenu={closeMenu}
+              openMenu={openMenu}
+              onOpen={onOpeDeleteModal}
+            />
           </HStack>
 
           {/* <Pressable

@@ -1,23 +1,10 @@
-import {
-  StyleSheet,
-  View,
-  Text,
-  ScrollView,
-  FlatList,
-  Pressable,
-} from 'react-native';
+import { StyleSheet, View, ScrollView, Pressable } from 'react-native';
 import { SeeAll } from './SeeAll';
-import {
-  FontAwesome6,
-  Fontisto,
-  MaterialCommunityIcons,
-  MaterialIcons,
-} from '@expo/vector-icons';
+import { Fontisto } from '@expo/vector-icons';
 import { HStack, VStack } from '@gluestack-ui/themed';
 import { MyText } from '../Ui/MyText';
 import { colors } from '@/constants/Colors';
 import { Category } from '@/types';
-import { Link } from 'expo-router';
 
 type Props = {};
 
@@ -42,7 +29,7 @@ export const CategoryList = ({
           style={{ flex: 1 }}
           contentContainerStyle={{ gap: 10, flexGrow: 1 }}
         >
-          {categories?.map(({ categoryname }, index) => (
+          {categories?.slice(1).map(({ categoryname }, index) => (
             <Pressable
               key={index}
               style={{ minWidth: 80 }}

@@ -16,10 +16,12 @@ import { useAuth } from '@/lib/zustand/auth';
 import Toast from 'react-native-toast-message';
 import { NavHeader } from '@/components/Ui/NavHeader';
 import { useQueryClient } from '@tanstack/react-query';
+import { Image } from 'expo-image';
 type Props = {};
 
 const DoctorDetails = (props: Props) => {
   const { id } = useLocalSearchParams<{ id: string }>();
+  console.log(id);
 
   const [email, setEmail] = useState('');
   const [sessionFee, setSessionFee] = useState('');
@@ -60,6 +62,7 @@ const DoctorDetails = (props: Props) => {
       </View>
     );
   }
+  console.log(data, 'doctor');
 
   const onStartTransaction = async () => {
     // email, sessionFee, paymentRef, phone;
@@ -144,6 +147,14 @@ const DoctorDetails = (props: Props) => {
       <DoctorCard item={data} />
       <VStack mt={20} mb={20}>
         <MyText
+          text={'Bio'}
+          style={{
+            fontFamily: 'PoppinsBold',
+            color: '#000',
+            paddingRight: 20,
+          }}
+        />
+        <MyText
           text={data?.bio}
           style={{
             fontFamily: 'PoppinsBold',
@@ -165,16 +176,18 @@ const DoctorCard = ({ item }: { item: Doctor }) => {
   return (
     <Card style={{ paddingVertical: 20, backgroundColor: '#F8F8F8' }}>
       <HStack alignItems="center" px={15} gap={10} mb={10}>
-        <Avatar.Image
+        <Image
           source={{
             uri: `https://247pharmacy.net/Uploads/doctor-${item?.doctorid}.jpeg`,
           }}
+          style={{ width: 50, height: 50, borderRadius: 50 }}
+          contentFit="cover"
         />
 
         <VStack>
           <MyText
             text={item?.Doctor}
-            style={{ fontFamily: 'PoppinsBold', fontSize: 18 }}
+            style={{ fontFamily: 'PoppinsBold', fontSize: 13 }}
           />
           <MyText
             text={item?.categoryName}

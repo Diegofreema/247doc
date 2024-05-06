@@ -2,18 +2,11 @@ import { StyleSheet, View } from 'react-native';
 import React, { useState } from 'react';
 import { Image } from 'expo-image';
 import { Container } from '@/components/Ui/Container';
-import { MyText } from '@/components/Ui/MyText';
 import { colors } from '@/constants/Colors';
 import { Button, HStack } from '@gluestack-ui/themed';
 import { Link, useRouter } from 'expo-router';
 import { AntDesign } from '@expo/vector-icons';
-import Animated, {
-  FadeIn,
-  FadeOut,
-  SlideInLeft,
-  SlideInRight,
-  SlideOutLeft,
-} from 'react-native-reanimated';
+import Animated, { FadeIn, SlideInRight } from 'react-native-reanimated';
 import {
   GestureDetector,
   Gesture,

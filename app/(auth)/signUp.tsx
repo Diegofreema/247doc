@@ -75,7 +75,7 @@ const signUp = (props: Props) => {
       password: '',
       confirmPassword: '',
       phoneNumber: '',
-      address: 'Male',
+      address: '',
       gender: '',
       dateOfBirth: format(defaultDateOfBirth, 'MM/dd/yyyy'),
     },
@@ -101,12 +101,14 @@ const signUp = (props: Props) => {
           `${api}?api=createaccount&patientemail=${email}&patientgender=${gender}&patientfname=${gender}&patientdob=${dateOfBirth}&patientphone=${phoneNumber}&patientadres=${address}&pasword1=${formattedPassword}&patientlname=${fullName}`
         );
 
-        if (data === 'Success') {
+        console.log(data?.result);
+
+        if (data.result === 'Success') {
           setShowModal(true);
           return;
         }
 
-        if (data === 'Email Already Exist') {
+        if (data?.result === 'Email Already Exist') {
           Toast.show({
             type: 'transparentToast',
             text1: 'Error',

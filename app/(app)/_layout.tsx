@@ -9,6 +9,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
+import { StatusBar } from 'expo-status-bar';
 type Props = {};
 
 const Layout = (props: Props) => {
@@ -22,6 +23,7 @@ const Layout = (props: Props) => {
   }
   return (
     <QueryClientProvider client={queryClient}>
+      <StatusBar style="dark" />
       <Stack
         screenOptions={{ headerShown: false }}
         initialRouteName="onboard"

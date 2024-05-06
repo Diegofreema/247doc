@@ -10,6 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import * as Updates from 'expo-updates';
+import { PaperProvider } from 'react-native-paper';
 import Toast, {
   BaseToast,
   ErrorToast,
@@ -108,7 +109,9 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <GluestackUIProvider config={config}>
-        <RootLayoutNav />
+        <PaperProvider>
+          <RootLayoutNav />
+        </PaperProvider>
         <Toast config={toastConfig} />
       </GluestackUIProvider>
     </GestureHandlerRootView>
