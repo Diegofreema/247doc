@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const DoctorCard = ({ item }: { item: Doctors }) => {
+export const DoctorCard = ({ item }: { item: Doctors }) => {
   const router = useRouter();
   const { onClose } = useShowBottom();
   const onPress = () => {

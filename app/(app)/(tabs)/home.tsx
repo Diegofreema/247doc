@@ -5,7 +5,11 @@ import { BoldHeader } from '@/components/Ui/BoldHeader';
 import { HStack, VStack } from '@gluestack-ui/themed';
 import { AppointmentCard } from '@/components/Home/AppointmentCard';
 import { CategoryList } from '@/components/Home/Category';
-import { useGetCategories, useGetSpecialists } from '@/lib/tanstack/queries';
+import {
+  useGetAll,
+  useGetCategories,
+  useGetSpecialists,
+} from '@/lib/tanstack/queries';
 import { ErrorComponent } from '@/components/Ui/Error';
 import { Loading } from '@/components/Ui/Loading';
 import { useState } from 'react';
@@ -19,9 +23,10 @@ import { useShowBottom } from '@/lib/zustand/showBottom';
 import { MenuComponent } from '@/components/Home/Menu';
 import { DeleteModal } from '@/components/Ui/Modals/deleteModal';
 import { useDeleteProfile } from '@/lib/tanstack/mutation';
+import { AllComponent } from '@/components/Home/AllComponent';
 
 export default function TabOneScreen() {
-  const [category, setCategory] = useState('Doctor');
+  const [category, setCategory] = useState('All');
   const [subCat, setSubCat] = useState('');
   const [visible, setVisible] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -35,20 +40,40 @@ export default function TabOneScreen() {
     isError: isErrorSpecialists,
     isPaused: isPausedSpecialists,
   } = useGetSpecialists(category);
-
+  const {
+    data: dataAll,
+    isPending: isPendingAll,
+    refetch: refetchAll,
+    isError: isErrorAll,
+    isPaused: isPausedAll,
+  } = useGetAll();
   const handleRefetch = () => {
     refetch();
     refetchSpecialists();
+    refetchAll();
   };
-  if (isError || isErrorSpecialists || isPaused || isPausedSpecialists) {
+  if (
+    isError ||
+    isErrorSpecialists ||
+    isPaused ||
+    isPausedSpecialists ||
+    isErrorAll ||
+    isPausedAll
+  ) {
     return <ErrorComponent refetch={handleRefetch} />;
   }
-  if (isPending) {
+  if (isPending || isPendingAll) {
     return <Loading />;
   }
 
   const onSelect = (item: string) => {
-    setCategory(item);
+    console.log('🚀 ~ onSelect ~ item:', item);
+
+    if (item === 'All') {
+      setCategory('All');
+    } else {
+      setCategory(item);
+    }
   };
   const onSubSelect = (item: string) => {
     onOpen();
@@ -92,26 +117,6 @@ export default function TabOneScreen() {
               onOpen={onOpeDeleteModal}
             />
           </HStack>
-
-          {/* <Pressable
-            onPress={onPress}
-            style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}
-          >
-            <HStack
-              gap={5}
-              alignItems="center"
-              px={17}
-              borderRadius={10}
-              backgroundColor="#F8F8F8"
-            >
-              <SearchIcon size={'xl'} />
-              <TextInput
-                placeholder="Search"
-                style={{ flex: 1, borderWidth: 0, paddingLeft: 0 }}
-                editable={false}
-              />
-            </HStack>
-          </Pressable> */}
         </VStack>
       </VStack>
       <View
@@ -128,12 +133,17 @@ export default function TabOneScreen() {
         <CategoryList cat={category} categories={data} onPress={onSelect} />
       </View>
       <View style={styles.cat}>
+        {category === 'All' && <AllComponent data={dataAll} />}
         {isPendingSpecialists ? (
           <VStack justifyContent="center" alignItems="center">
             <ActivityIndicator color={colors.textGreen} />
           </VStack>
         ) : (
-          <SubCat subCategory={dataSpecialists} onPress={onSubSelect} />
+          <SubCat
+            subCategory={dataSpecialists}
+            onPress={onSubSelect}
+            category={category}
+          />
         )}
       </View>
       <BottomComponent cat={subCat} />
@@ -144,9 +154,11 @@ export default function TabOneScreen() {
 const SubCat = ({
   subCategory,
   onPress,
+  category,
 }: {
   subCategory: Subcategory[];
   onPress: (item: string) => void;
+  category: string;
 }) => {
   return (
     <FlatList
@@ -175,12 +187,14 @@ const SubCat = ({
       showsVerticalScrollIndicator={false}
       ItemSeparatorComponent={() => <View style={{ width: 20 }} />}
       contentContainerStyle={{ paddingBottom: 20, gap: 10 }}
-      ListEmptyComponent={() => (
-        <MyText
-          text="No doctors available for this category"
-          style={{ fontFamily: 'PoppinsBold', textAlign: 'center' }}
-        />
-      )}
+      ListEmptyComponent={() =>
+        category !== 'All' && (
+          <MyText
+            text="No doctors available for this category"
+            style={{ fontFamily: 'PoppinsBold', textAlign: 'center' }}
+          />
+        )
+      }
     />
   );
 };

@@ -39,7 +39,7 @@ export const AppointmentCard = ({}: Props): JSX.Element => {
     isRefetchError,
     isRefetching,
   } = useComingSessions(id);
-  console.log('🚀 ~ AppointmentCard ~ isFetching:', isFetching);
+
   const [currentIndex, setCurrentIndex] = useState<number | null>(0);
   const router = useRouter();
   if (isError || isPaused) {
@@ -48,8 +48,7 @@ export const AppointmentCard = ({}: Props): JSX.Element => {
   if (isPending) {
     return <Loading />;
   }
-  console.log(data?.length, 'id', id);
-  console.log(data);
+
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     console.log('🚀 ~ handleScroll ~ event:', event.nativeEvent);
     event.persist();

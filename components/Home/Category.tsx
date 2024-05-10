@@ -29,7 +29,7 @@ export const CategoryList = ({
           style={{ flex: 1 }}
           contentContainerStyle={{ gap: 10, flexGrow: 1 }}
         >
-          {categories?.slice(1).map(({ categoryname }, index) => (
+          {categories.map(({ categoryname }, index) => (
             <Pressable
               key={index}
               style={{ minWidth: 80 }}

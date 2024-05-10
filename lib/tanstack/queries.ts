@@ -39,6 +39,25 @@ export const useGetSpecialists = (cat: string) => {
     queryFn: getSpecialists,
   });
 };
+
+export const useGetAll = () => {
+  const getSpecialists = async () => {
+    const res = await axios.get(`${api}?api=consultationsearch`);
+
+    let data = [];
+    if (Object.prototype.toString.call(res.data) === '[object Object]') {
+      data.push(res.data);
+    } else if (Object.prototype.toString.call(res.data) === '[object Array]') {
+      data = [...res.data];
+    }
+
+    return data as Doctors[];
+  };
+  return useQuery({
+    queryKey: ['all_sessions'],
+    queryFn: getSpecialists,
+  });
+};
 export const useGetSession = (cat: string) => {
   const getSpecialists = async () => {
     const res = await axios.get(
