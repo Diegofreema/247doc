@@ -29,7 +29,9 @@ const DoctorDetails = (props: Props) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { id: userId } = useAuth();
-  const { data, isPending, refetch, isError, isPaused } = useDoctor(id);
+  const { data, isPending, refetch, isError, isPaused } = useDoctor(
+    id as string
+  );
   const paystackWebViewRef = useRef<paystackProps.PayStackRef>();
   if (isError || isPaused) {
     return <ErrorComponent refetch={refetch} />;
@@ -104,8 +106,7 @@ const DoctorDetails = (props: Props) => {
       <NavHeader />
 
       <Paystack
-        // paystackKey="pk_live_34dcb421bb4e9e6f20fdf2c993f2b44c9e436fbe"
-        paystackKey="pk_test_ed76c81770ed30bfd8734bd6086aa6e2e2057088"
+        paystackKey="pk_live_34dcb421bb4e9e6f20fdf2c993f2b44c9e436fbe"
         billingEmail={email}
         amount={sessionFee}
         channels={[

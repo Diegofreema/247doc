@@ -15,7 +15,7 @@ import { useAuth } from '@/lib/zustand/auth';
 import { useComingSessions } from '@/lib/tanstack/queries';
 import { ErrorComponent } from '@/components/Ui/Error';
 import { Loading } from '@/components/Ui/Loading';
-import { useRouter } from 'expo-router';
+import { router, useRouter } from 'expo-router';
 import { colors } from '@/constants/Colors';
 import { MyText } from '@/components/Ui/MyText';
 import { FontAwesome } from '@expo/vector-icons';
@@ -182,6 +182,7 @@ const AppointmentCardsItem = ({ item }: { item: UpComingSessions }) => {
 
 const ListEmptyComponent = () => {
   const { width } = useWindowDimensions();
+
   return (
     <VStack bg={colors.textGreen} p={20} w={'100%'} borderRadius={10}>
       <HStack alignItems="center" gap={10} mb={20}>
@@ -195,7 +196,7 @@ appointment at the moment"
               fontFamily: 'PoppinsMedium',
             }}
           />
-          <Pressable>
+          <Pressable onPress={() => router.push('/home')}>
             <HStack
               gap={5}
               alignItems="center"

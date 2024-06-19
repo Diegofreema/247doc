@@ -45,11 +45,15 @@ export const ConfirmModal = ({
           />
           <MyText
             style={{ fontFamily: 'PoppinsBold', fontSize: 18 }}
-            text="Account Created"
+            text="Account Created, Please check your email"
           />
           <MyText
             style={{ fontFamily: 'Poppins', fontSize: 13, textAlign: 'center' }}
-            text={`Welcome to 247Doc ${name}`}
+            text={`We sent a link to verify your email`}
+          />
+          <MyText
+            style={{ fontFamily: 'Poppins', fontSize: 13, textAlign: 'center' }}
+            text={`Verify your email before you will be able to login`}
           />
 
           <MyButton text="Continue" onPress={onPress} style={{ width: 150 }} />

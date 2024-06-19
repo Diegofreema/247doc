@@ -27,7 +27,7 @@ const forgot = (props: Props) => {
     touched,
     errors,
     values,
-    setValues,
+
     resetForm,
     isSubmitting,
   } = useFormik({
