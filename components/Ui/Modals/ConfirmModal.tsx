@@ -34,7 +34,7 @@ export const ConfirmModal = ({
             alignItems: 'center',
             gap: 10,
             width: finalWidth,
-            height: finalWidth,
+
             borderRadius: 10,
           }}
         >
@@ -44,7 +44,11 @@ export const ConfirmModal = ({
             resizeMode="contain"
           />
           <MyText
-            style={{ fontFamily: 'PoppinsBold', fontSize: 18 }}
+            style={{
+              fontFamily: 'PoppinsBold',
+              fontSize: 18,
+              textAlign: 'center',
+            }}
             text="Account Created, Please check your email"
           />
           <MyText
