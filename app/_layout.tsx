@@ -51,7 +51,6 @@ const toastConfig = {
   transparentToast: ({ text1, text2 }: ToastConfigParams<any>) => (
     <View
       style={{
-        height: 60,
         width: '90%',
         backgroundColor: colors.textGreen,
         padding: 10,
@@ -59,8 +58,12 @@ const toastConfig = {
         borderRadius: 10,
       }}
     >
-      <Text style={{ fontFamily: 'PoppinsBold', color: 'white' }}>{text1}</Text>
-      <Text style={{ fontFamily: 'PoppinsBold', color: 'white' }}>{text2}</Text>
+      <Text style={{ fontFamily: 'Poppins', color: 'white', fontSize: 12 }}>
+        {text1}
+      </Text>
+      <Text style={{ fontFamily: 'PoppinsBold', color: 'white', fontSize: 17 }}>
+        {text2}
+      </Text>
     </View>
   ),
 };

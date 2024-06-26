@@ -20,7 +20,7 @@ export const ConfirmModal = ({
   onPress,
 }: Props): JSX.Element => {
   const { width } = useWindowDimensions();
-  const finalWidth = width - 100;
+  const finalWidth = width - 30;
   return (
     <View>
       <Modal

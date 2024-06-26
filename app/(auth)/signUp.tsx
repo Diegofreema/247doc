@@ -56,7 +56,8 @@ const signUp = (props: Props) => {
   const router = useRouter();
   const [date, setDate] = useState(new Date(defaultDateOfBirth));
   const [showModal, setShowModal] = useState(false);
-
+  const [secured, setSecured] = useState(true);
+  const [securedConfirm, setSecuredConfirm] = useState(true);
   const [show, setShow] = useState(false);
   const {
     handleChange,
@@ -106,9 +107,10 @@ const signUp = (props: Props) => {
         if (data.result === 'Success') {
           Toast.show({
             type: 'transparentToast',
-            text1: 'Success',
-            text2: 'Please check your email to verify your account',
+            text1: 'Please a verification link has been sent to your email.',
+            text2: 'Verify your account, before you can log in.',
             position: 'top',
+            visibilityTime: 9000,
           });
           setShowModal(true);
           return;
@@ -344,8 +346,12 @@ const signUp = (props: Props) => {
           <>
             <TextInput
               value={password}
+              secureTextEntry={secured}
               placeholder="Password"
               onChangeText={handleChange('password')}
+              password
+              secured={secured}
+              setSecured={setSecured}
             />
             {touched.password && errors.password && (
               <Text style={{ color: 'red', fontWeight: 'bold' }}>
@@ -355,9 +361,13 @@ const signUp = (props: Props) => {
           </>
           <>
             <TextInput
+              secureTextEntry={securedConfirm}
               value={confirmPassword}
               placeholder="Confirm Password"
               onChangeText={handleChange('confirmPassword')}
+              password
+              secured={securedConfirm}
+              setSecured={setSecuredConfirm}
             />
             {touched.confirmPassword && errors.confirmPassword && (
               <Text style={{ color: 'red', fontWeight: 'bold' }}>
