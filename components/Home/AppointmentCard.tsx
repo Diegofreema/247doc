@@ -128,7 +128,7 @@ const AppointmentCardsItem = ({ item }: { item: UpComingSessions }) => {
             text={item?.doctorName}
             style={{ fontSize: 18, color: 'white', fontFamily: 'PoppinsBold' }}
           />
-          <MyText
+          {/* <MyText
             text={item?.doctorEmail}
             style={{
               fontSize: 13,
@@ -143,7 +143,7 @@ const AppointmentCardsItem = ({ item }: { item: UpComingSessions }) => {
               color: 'white',
               fontFamily: 'Poppins',
             }}
-          />
+          /> */}
         </VStack>
       </HStack>
 

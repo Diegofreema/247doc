@@ -1,6 +1,6 @@
 import { StyleSheet, View, ScrollView, Pressable } from 'react-native';
 import { SeeAll } from './SeeAll';
-import { Fontisto } from '@expo/vector-icons';
+import { FontAwesome, Fontisto } from '@expo/vector-icons';
 import { HStack, VStack } from '@gluestack-ui/themed';
 import { MyText } from '../Ui/MyText';
 import { colors } from '@/constants/Colors';
@@ -20,7 +20,10 @@ export const CategoryList = ({
   return (
     <View>
       <View>
-        <SeeAll onPress={() => {}} text="Medical Practitioner Category" />
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <SeeAll onPress={() => {}} text="Medical Practitioner Category" />
+          <FontAwesome color="black" name="arrow-right" size={20} />
+        </View>
       </View>
       <HStack justifyContent="space-between" gap={5} mt={10}>
         <ScrollView

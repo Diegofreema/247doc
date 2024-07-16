@@ -184,8 +184,15 @@ const ListEmptyComponent = () => {
   const { width } = useWindowDimensions();
 
   return (
-    <VStack bg={colors.textGreen} p={20} w={'100%'} borderRadius={10}>
-      <HStack alignItems="center" gap={10} mb={20}>
+    <VStack height={'100%'} w={'100%'}>
+      <HStack
+        bg={colors.textGreen}
+        p={20}
+        borderRadius={10}
+        alignItems="center"
+        gap={10}
+        mb={20}
+      >
         <VStack>
           <MyText
             text="You currently don’t have any

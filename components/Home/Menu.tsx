@@ -2,8 +2,8 @@ import { colors } from '@/constants/Colors';
 import { useAuth } from '@/lib/zustand/auth';
 import { FontAwesome } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { StyleSheet, View, Text, Pressable } from 'react-native';
-import { Button, Divider, Menu } from 'react-native-paper';
+import { StyleSheet, Pressable } from 'react-native';
+import { Divider, Menu } from 'react-native-paper';
 
 type Props = {
   visible: boolean;
@@ -33,6 +33,7 @@ export const MenuComponent = ({
       visible={visible}
       onDismiss={closeMenu}
       elevation={5}
+      style={{ marginTop: 20 }}
       contentStyle={{ backgroundColor: 'white' }}
       anchor={
         <Pressable
