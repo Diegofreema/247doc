@@ -2,7 +2,7 @@
   "expo": {
     "name": "247 Doc",
     "slug": "247doc",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "doc.netpro",
@@ -15,8 +15,8 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "1.0.4",
-      "runtimeVersion": "1.0.4",
+      "buildNumber": "1.0.5",
+      "runtimeVersion": "1.0.5",
       "config": {
         "usesNonExemptEncryption": false
       },
@@ -28,8 +28,8 @@
         "backgroundColor": "#ffffff"
       },
       "package": "acgcvv_chcvd_a5657_agasg.t",
-      "versionCode": 4,
-      "runtimeVersion": "1.0.4"
+      "versionCode": 5,
+      "runtimeVersion": "1.0.5"
     },
     "web": {
       "bundler": "metro",
