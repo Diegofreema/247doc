@@ -48,39 +48,37 @@ const Appointment = ({}: Props): JSX.Element => {
   console.log(data?.length);
 
   return (
-    <>
-      <FlatList
-        data={data}
-        onRefresh={refetch}
-        refreshing={isRefetching}
-        ListHeaderComponent={() => (
-          <HStack justifyContent="space-between" alignItems="center">
-            <MyText
-              text="Appointments"
-              style={{
-                fontSize: 20,
-                color: 'black',
-                fontFamily: 'PoppinsBold',
-              }}
-            />
-          </HStack>
-        )}
-        keyExtractor={(item, index) => index?.toString()}
-        renderItem={({ item }) => <AppointmentCardsItem item={item} />}
-        showsHorizontalScrollIndicator={false}
-        ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
-        contentContainerStyle={{
-          paddingVertical: 20,
-          paddingHorizontal: 15,
-          backgroundColor: 'transparent',
-          flexGrow: 1,
+    <FlatList
+      data={data}
+      onRefresh={refetch}
+      refreshing={isRefetching}
+      ListHeaderComponent={() => (
+        <HStack justifyContent="space-between" alignItems="center">
+          <MyText
+            text="Appointments"
+            style={{
+              fontSize: 20,
+              color: 'black',
+              fontFamily: 'PoppinsBold',
+            }}
+          />
+        </HStack>
+      )}
+      keyExtractor={(item, index) => index?.toString()}
+      renderItem={({ item }) => <AppointmentCardsItem item={item} />}
+      showsHorizontalScrollIndicator={false}
+      ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+      contentContainerStyle={{
+        paddingVertical: 20,
+        paddingHorizontal: 15,
+        backgroundColor: 'transparent',
+        flexGrow: 1,
 
-          gap: 20,
-        }}
-        style={{ backgroundColor: 'transparent' }}
-        ListEmptyComponent={() => <ListEmptyComponent />}
-      />
-    </>
+        gap: 20,
+      }}
+      style={{ backgroundColor: 'white' }}
+      ListEmptyComponent={() => <ListEmptyComponent />}
+    />
   );
 };
 

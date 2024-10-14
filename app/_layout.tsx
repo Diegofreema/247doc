@@ -123,6 +123,7 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   return (
+    // @ts-ignore
     <>
       <ThemeProvider value={DefaultTheme}>
         <SafeAreaView style={{ flex: 1 }}>

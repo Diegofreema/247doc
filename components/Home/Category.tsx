@@ -5,6 +5,7 @@ import { HStack, VStack } from '@gluestack-ui/themed';
 import { MyText } from '../Ui/MyText';
 import { colors } from '@/constants/Colors';
 import { Category } from '@/types';
+import { useRef } from 'react';
 
 type Props = {};
 
@@ -17,16 +18,31 @@ export const CategoryList = ({
   onPress: (text: string) => void;
   cat: string;
 }): JSX.Element => {
+  const scrollRef = useRef<ScrollView | null>(null);
+  const handleNext = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollToEnd({ animated: true });
+    }
+  };
   return (
     <View>
       <View>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <SeeAll onPress={() => {}} text="Medical Practitioner Category" />
-          <FontAwesome color="black" name="arrow-right" size={20} />
+          <Pressable
+            style={({ pressed }) => ({
+              opacity: pressed ? 0.5 : 1,
+              padding: 5,
+            })}
+            onPress={handleNext}
+          >
+            <FontAwesome color="black" name="arrow-right" size={20} />
+          </Pressable>
         </View>
       </View>
       <HStack justifyContent="space-between" gap={5} mt={10}>
         <ScrollView
+          ref={scrollRef}
           horizontal
           showsHorizontalScrollIndicator={false}
           style={{ flex: 1 }}

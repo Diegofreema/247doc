@@ -99,7 +99,7 @@ const signUp = (props: Props) => {
         .replace(/:/g, '');
       try {
         const { data } = await axios.post(
-          `${api}?api=createaccount&patientemail=${email}&patientgender=${gender}&patientfname=${firstName}&patientdob=${dateOfBirth}&patientphone=${phoneNumber}&patientadres=${address}&pasword1=${formattedPassword}&patientlname=${lastName}`
+          `${api}?api=createaccount&patientemail=${email.toLowerCase()}&patientgender=${gender}&patientfname=${firstName}&patientdob=${dateOfBirth}&patientphone=${phoneNumber}&patientadres=${address}&pasword1=${formattedPassword}&patientlname=${lastName}`
         );
 
         console.log(data?.result);
@@ -188,6 +188,7 @@ const signUp = (props: Props) => {
         </VStack>
 
         <VStack mt={40} gap={25}>
+          {/* @ts-ignore */}
           <>
             <TextInput
               value={firstName}

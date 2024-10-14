@@ -38,7 +38,7 @@ const forgot = (props: Props) => {
     onSubmit: async (values) => {
       try {
         const { data } = await axios.post(
-          `${api}?api=recoverpassword&patientemail=${values.email}`
+          `${api}?api=recoverpassword&patientemail=${values.email.toLowerCase()}`
         );
 
         if (data === "{'result': 'failed'}") {

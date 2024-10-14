@@ -6,7 +6,14 @@ type Props = {};
 
 export const Loading = ({}: Props): JSX.Element => {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white',
+      }}
+    >
       <ActivityIndicator size="large" color={colors.textGreen} />
     </View>
   );

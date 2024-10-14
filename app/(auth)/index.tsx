@@ -48,7 +48,7 @@ const Login = (props: Props) => {
         .replace(/:/g, '');
       try {
         const { data } = await axios.post(
-          `${api}?api=signin&patientemail=${values.email}&pasword1=${formattedPassword}`
+          `${api}?api=signin&patientemail=${values.email.toLowerCase()}&pasword1=${formattedPassword}`
         );
         console.log(data?.result);
         if (data?.result === 'incorrect credentials') {
@@ -93,7 +93,7 @@ const Login = (props: Props) => {
       <LoadingComponent isLoading={isSubmitting} />
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{ flex: 1 }}
+        style={{ flex: 1, backgroundColor: 'white' }}
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
       >
         <Container>
