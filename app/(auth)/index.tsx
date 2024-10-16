@@ -1,4 +1,11 @@
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import React, { useState } from 'react';
 import { Link, useRouter } from 'expo-router';
 import { VStack } from '@gluestack-ui/themed';
@@ -27,6 +34,7 @@ const Login = (props: Props) => {
   const router = useRouter();
   const [secured, setSecured] = useState(true);
   const { setId } = useAuth();
+  const { width } = useWindowDimensions();
   const {
     handleChange,
     handleSubmit,
@@ -86,8 +94,10 @@ const Login = (props: Props) => {
   const navigate = () => {
     router.push('/signUp');
   };
+  console.log({ width });
 
   const { email, password } = values;
+  const isIPad = width > 500;
   return (
     <>
       <LoadingComponent isLoading={isSubmitting} />
@@ -96,7 +106,9 @@ const Login = (props: Props) => {
         style={{ flex: 1, backgroundColor: 'white' }}
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
       >
-        <Container>
+        <Container
+          style={{ width: isIPad ? '70%' : '100%', marginHorizontal: 'auto' }}
+        >
           <VStack mt={30}>
             <BoldHeader
               text="Sign in"

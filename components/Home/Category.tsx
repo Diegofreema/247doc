@@ -1,4 +1,5 @@
 import { StyleSheet, View, ScrollView, Pressable } from 'react-native';
+import * as Haptics from 'expo-haptics';
 import { SeeAll } from './SeeAll';
 import { FontAwesome, Fontisto } from '@expo/vector-icons';
 import { HStack, VStack } from '@gluestack-ui/themed';
@@ -22,6 +23,7 @@ export const CategoryList = ({
   const handleNext = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollToEnd({ animated: true });
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     }
   };
   return (

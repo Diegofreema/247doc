@@ -1,12 +1,15 @@
 import { PropsWithChildren } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, StyleProp, ViewStyle } from 'react-native';
 
 type Props = {
-  children: PropsWithChildren<any>;
+  style?: StyleProp<ViewStyle>;
 };
 
-export const Container = ({ children }: Props): JSX.Element => {
-  return <View style={[styles.container]}>{children}</View>;
+export const Container = ({
+  children,
+  style,
+}: PropsWithChildren<Props>): JSX.Element => {
+  return <View style={[styles.container, style]}>{children}</View>;
 };
 
 const styles = StyleSheet.create({

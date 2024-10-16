@@ -114,7 +114,7 @@ android {
         applicationId 'acgcvv_chcvd_a5657_agasg.t'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 5
+        versionCode 1
         versionName "1.0.5"
     }
     signingConfigs {

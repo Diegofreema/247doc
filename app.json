@@ -15,7 +15,6 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-
       "runtimeVersion": "1.0.5",
       "config": {
         "usesNonExemptEncryption": false
@@ -28,7 +27,6 @@
         "backgroundColor": "#ffffff"
       },
       "package": "acgcvv_chcvd_a5657_agasg.t",
-
       "runtimeVersion": "1.0.5"
     },
     "web": {

@@ -48,24 +48,15 @@ export const AppointmentCard = ({}: Props): JSX.Element => {
   if (isPending) {
     return <Loading />;
   }
-
-  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    console.log('🚀 ~ handleScroll ~ event:', event.nativeEvent);
-    event.persist();
-    const contentOffset = event.nativeEvent.contentOffset;
-    const viewSize = event.nativeEvent.layoutMeasurement;
-    const slideSize = viewSize.width;
-    const index = Math.floor(contentOffset.x / slideSize);
-    console.log('🚀 ~ handleScroll ~ index:', index);
-    // setCurrentIndex(index);
-  };
+  const hasAppointments = !!data?.length;
   return (
+    // @ts-ignore
     <>
       <View style={{ paddingRight: 20 }}>
         <SeeAll
           text="Appointments"
           onPress={() => router.push('/(app)/(tabs)/two')}
-          subText="See all"
+          subText={hasAppointments ? 'See all' : ''}
         />
       </View>
 
@@ -90,24 +81,6 @@ export const AppointmentCard = ({}: Props): JSX.Element => {
             return <AppointmentCardsItem key={index} item={item} />;
           })}
       </ScrollView>
-      {/* {data?.length > 0 && (
-        <HStack justifyContent="center" gap={5} mt={10}>
-          {data?.splice(0, 3).map((_, index) => {
-            return (
-              <View
-                style={{
-                  width: currentIndex === index ? 20 : 10,
-                  backgroundColor:
-                    currentIndex === index ? colors.textGreen : colors.textGray,
-                  height: 10,
-                  borderRadius: 5,
-                }}
-                key={index}
-              />
-            );
-          })}
-        </HStack>
-      )} */}
     </>
   );
 };
