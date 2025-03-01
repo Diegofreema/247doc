@@ -1,12 +1,10 @@
-import { StyleSheet, View, Text, StyleProp, TextStyle } from 'react-native';
+import { StyleProp, Text, TextStyle } from 'react-native';
 
 type Props = {
   text: string | number;
   style?: StyleProp<TextStyle>;
 };
 
-export const MyText = ({ text, style }: Props): JSX.Element => {
+export const MyText = ({ text, style }: Props) => {
   return <Text style={style}>{text}</Text>;
 };
-
-const styles = StyleSheet.create({});

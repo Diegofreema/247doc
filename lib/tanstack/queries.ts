@@ -1,13 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { api } from '../helper';
-import {
-  Category,
-  Doctor,
-  Doctors,
-  Subcategory,
-  UpComingSessions,
-} from '@/types';
+import { Category, Doctor, Doctors, Subcategory, UpComingSessions } from '@/types';
 
 export const useGetCategories = () => {
   const getCat = async () => {
@@ -21,9 +15,7 @@ export const useGetCategories = () => {
 };
 export const useGetSpecialists = (cat: string) => {
   const getSpecialists = async () => {
-    const res = await axios.get(
-      `${api}?api=specialistlist&categoryname=${cat}`
-    );
+    const res = await axios.get(`${api}?api=specialistlist&categoryname=${cat}`);
 
     let data = [];
     if (Object.prototype.toString.call(res.data) === '[object Object]') {
@@ -60,9 +52,7 @@ export const useGetAll = () => {
 };
 export const useGetSession = (cat: string) => {
   const getSpecialists = async () => {
-    const res = await axios.get(
-      `${api}?api=consultationsearch&categoryname=${cat}`
-    );
+    const res = await axios.get(`${api}?api=consultationsearch&categoryname=${cat}`);
 
     let data = [];
     if (Object.prototype.toString.call(res.data) === '[object Object]') {
@@ -80,9 +70,7 @@ export const useGetSession = (cat: string) => {
 };
 export const useComingSessions = (ref: string) => {
   const getUpcomingSessions = async () => {
-    const res = await axios.get(
-      `${api}?api=upcomingsessions&patientref=${ref}`
-    );
+    const res = await axios.get(`${api}?api=upcomingsessions&patientref=${ref}`);
 
     let data = [];
     if (Object.prototype.toString.call(res.data) === '[object Object]') {

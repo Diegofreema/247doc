@@ -1,51 +1,31 @@
 import { HStack, VStack } from '@gluestack-ui/themed';
 import { Image } from 'expo-image';
-import {
-  StyleSheet,
-  View,
-  FlatList,
-  useWindowDimensions,
-  Pressable,
-  Platform,
-} from 'react-native';
+import { FlatList, Platform, Pressable, useWindowDimensions, View } from 'react-native';
 
-import { UpComingSessions } from '@/types';
-import * as Linking from 'expo-linking';
-import { useAuth } from '@/lib/zustand/auth';
-import { useComingSessions } from '@/lib/tanstack/queries';
 import { ErrorComponent } from '@/components/Ui/Error';
 import { Loading } from '@/components/Ui/Loading';
-import { router, useRouter } from 'expo-router';
-import { colors } from '@/constants/Colors';
 import { MyText } from '@/components/Ui/MyText';
+import { colors } from '@/constants/Colors';
+import { useComingSessions } from '@/lib/tanstack/queries';
+import { useAuth } from '@/lib/zustand/auth';
+import { UpComingSessions } from '@/types';
 import { FontAwesome } from '@expo/vector-icons';
-import { DeleteModal } from '@/components/Ui/Modals/deleteModal';
-import { useState } from 'react';
-import { useDeleteProfile } from '@/lib/tanstack/mutation';
-import { MyButton } from '@/components/Ui/MyButton';
-type Props = {};
+import * as Linking from 'expo-linking';
+import { router } from 'expo-router';
 
-const Appointment = ({}: Props): JSX.Element => {
+const Appointment = () => {
   const { id } = useAuth();
+  const { width } = useWindowDimensions();
+  const isIPad = width > 500;
+  const { data, isPending, refetch, isError, isPaused, isRefetching, isRefetchError } =
+    useComingSessions(id);
 
-  const {
-    data,
-    isPending,
-    refetch,
-    isError,
-    isPaused,
-    isRefetching,
-    isRefetchError,
-  } = useComingSessions(id);
-
-  const router = useRouter();
   if (isError || isPaused || isRefetchError) {
     return <ErrorComponent refetch={refetch} />;
   }
   if (isPending) {
     return <Loading />;
   }
-  console.log(data?.length);
 
   return (
     <FlatList
@@ -73,16 +53,18 @@ const Appointment = ({}: Props): JSX.Element => {
         paddingHorizontal: 15,
         backgroundColor: 'transparent',
         flexGrow: 1,
-
+        width: isIPad ? '90%' : '100%',
+        marginHorizontal: 'auto',
         gap: 20,
       }}
       style={{ backgroundColor: 'white' }}
       ListEmptyComponent={() => <ListEmptyComponent />}
+      numColumns={isIPad ? 2 : 1}
+      columnWrapperStyle={isIPad ? { gap: 20 } : null}
     />
   );
 };
 
-const styles = StyleSheet.create({});
 export default Appointment;
 const AppointmentCardsItem = ({ item }: { item: UpComingSessions }) => {
   const onPress = () => {
@@ -98,7 +80,7 @@ const AppointmentCardsItem = ({ item }: { item: UpComingSessions }) => {
     Linking.openURL(number);
   };
   return (
-    <VStack bg={colors.textGreen} p={20} w={'100%'} borderRadius={10}>
+    <VStack bg={colors.textGreen} p={20} w={'100%'} flex={1} borderRadius={10}>
       <HStack alignItems="center" gap={10} mb={20}>
         <VStack>
           <MyText
@@ -118,8 +100,7 @@ const AppointmentCardsItem = ({ item }: { item: UpComingSessions }) => {
             style={({ pressed }) => ({
               opacity: pressed ? 0.5 : 1,
               paddingVertical: 4,
-            })}
-          >
+            })}>
             <MyText
               text={item?.doctorPhone}
               style={{
@@ -137,8 +118,7 @@ const AppointmentCardsItem = ({ item }: { item: UpComingSessions }) => {
         padding={10}
         borderRadius={10}
         bg={colors.textGreen2}
-        alignItems="center"
-      >
+        alignItems="center">
         <HStack gap={5} alignItems="center">
           <FontAwesome name="calendar" color="white" size={13} />
           <MyText
@@ -162,8 +142,7 @@ const AppointmentCardsItem = ({ item }: { item: UpComingSessions }) => {
               backgroundColor: colors.textGreen,
               borderRadius: 5,
             },
-          ]}
-        >
+          ]}>
           <MyText
             text={'Meeting link'}
             style={{
@@ -179,18 +158,9 @@ const AppointmentCardsItem = ({ item }: { item: UpComingSessions }) => {
 };
 
 const ListEmptyComponent = () => {
-  const { width } = useWindowDimensions();
-
   return (
     <VStack height={'100%'} w={'100%'}>
-      <HStack
-        bg={colors.textGreen}
-        p={20}
-        borderRadius={10}
-        alignItems="center"
-        gap={10}
-        mb={20}
-      >
+      <HStack bg={colors.textGreen} p={20} borderRadius={10} alignItems="center" gap={10} mb={20}>
         <VStack>
           <MyText
             text="You currently don’t have any
@@ -208,8 +178,7 @@ appointment at the moment"
               padding={10}
               borderRadius={10}
               bg={colors.textGreen2}
-              mt={10}
-            >
+              mt={10}>
               <FontAwesome name="calendar" color="white" size={13} />
               <MyText
                 text="Book an Appointment"

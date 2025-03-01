@@ -1,7 +1,6 @@
-import { StyleSheet, View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { useState } from 'react';
-import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query';
 
 import Animated, { ZoomIn, ZoomOut } from 'react-native-reanimated';
 import { MyButton } from './MyButton';
@@ -11,7 +10,7 @@ type Props = {
 };
 
 export const ErrorComponent = ({ refetch }: Props): JSX.Element => {
-  const [retry, setRetry] = useState(false);
+  const [_, setRetry] = useState(false);
 
   const handleRetry = () => {
     refetch();
@@ -25,8 +24,7 @@ export const ErrorComponent = ({ refetch }: Props): JSX.Element => {
         justifyContent: 'center',
         backgroundColor: 'white',
         width: '100%',
-      }}
-    >
+      }}>
       <Animated.View
         entering={ZoomIn.duration(500)}
         exiting={ZoomOut}
@@ -36,8 +34,8 @@ export const ErrorComponent = ({ refetch }: Props): JSX.Element => {
           justifyContent: 'center',
           backgroundColor: 'transparent',
           width: '100%',
-        }}
-      >
+          gap: 10,
+        }}>
         <Text style={{ color: 'black', fontSize: 20, fontWeight: 'bold' }}>
           Something went wrong
         </Text>
@@ -48,5 +46,3 @@ export const ErrorComponent = ({ refetch }: Props): JSX.Element => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({});

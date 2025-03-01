@@ -2,7 +2,7 @@ import { colors } from '@/constants/Colors';
 import { useAuth } from '@/lib/zustand/auth';
 import { FontAwesome } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { StyleSheet, Pressable } from 'react-native';
+import { Pressable } from 'react-native';
 import { Divider, Menu } from 'react-native-paper';
 
 type Props = {
@@ -12,12 +12,7 @@ type Props = {
   onOpen: () => void;
 };
 
-export const MenuComponent = ({
-  closeMenu,
-  openMenu,
-  visible,
-  onOpen,
-}: Props): JSX.Element => {
+export const MenuComponent = ({ closeMenu, openMenu, visible, onOpen }: Props): JSX.Element => {
   const { clearId } = useAuth();
   const logOut = () => {
     closeMenu();
@@ -36,14 +31,10 @@ export const MenuComponent = ({
       style={{ marginTop: 20 }}
       contentStyle={{ backgroundColor: 'white' }}
       anchor={
-        <Pressable
-          onPress={openMenu}
-          style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}
-        >
+        <Pressable onPress={openMenu} style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}>
           <FontAwesome name="user-o" size={24} color={colors.textGreen} />
         </Pressable>
-      }
-    >
+      }>
       <Menu.Item
         onPress={logOut}
         titleStyle={{
@@ -62,5 +53,3 @@ export const MenuComponent = ({
     </Menu>
   );
 };
-
-const styles = StyleSheet.create({});

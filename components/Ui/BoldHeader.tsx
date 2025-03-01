@@ -1,6 +1,6 @@
 import { colors } from '@/constants/Colors';
 import { VStack } from '@gluestack-ui/themed';
-import { StyleSheet, View, Text, StyleProp, TextStyle } from 'react-native';
+import { StyleProp, Text, TextStyle } from 'react-native';
 
 type Props = {
   text: string;
@@ -11,10 +11,7 @@ type Props = {
 export const BoldHeader = ({ text, subText, style }: Props): JSX.Element => {
   return (
     <VStack gap={10}>
-      <Text style={[{ fontFamily: 'PoppinsBold', fontSize: 23 }, style]}>
-        {' '}
-        {text}
-      </Text>
+      <Text style={[{ fontFamily: 'PoppinsBold', fontSize: 23 }, style]}> {text}</Text>
       {subText && (
         <Text
           style={[
@@ -24,8 +21,7 @@ export const BoldHeader = ({ text, subText, style }: Props): JSX.Element => {
               color: colors.textLight,
             },
             style,
-          ]}
-        >
+          ]}>
           {' '}
           {subText}
         </Text>
@@ -33,5 +29,3 @@ export const BoldHeader = ({ text, subText, style }: Props): JSX.Element => {
     </VStack>
   );
 };
-
-const styles = StyleSheet.create({});

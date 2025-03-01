@@ -1,22 +1,20 @@
 import {
-  View,
-  Text,
-  Pressable,
-  StyleSheet,
-  ScrollView,
   Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
 } from 'react-native';
-import { z } from 'zod';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { Container } from '@/components/Ui/Container';
 import { SelectList } from 'react-native-dropdown-select-list';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { withZodSchema } from 'formik-validator-zod';
-import { HStack, VStack } from '@gluestack-ui/themed';
+import { VStack } from '@gluestack-ui/themed';
 import { NavHeader } from '@/components/Ui/NavHeader';
 import { TextInput } from '@/components/Ui/TextInput';
-import { Link, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { BoldHeader } from '@/components/Ui/BoldHeader';
 import { colors } from '@/constants/Colors';
 import { MyButton } from '@/components/Ui/MyButton';
@@ -26,13 +24,9 @@ import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import { api } from '@/lib/helper';
 import { ConfirmModal } from '@/components/Ui/Modals/ConfirmModal';
-type Props = {};
 
-const defaultDateOfBirth = new Date(
-  new Date().setFullYear(new Date().getFullYear() - 18)
-);
-const passwordRegExp =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$/;
+const defaultDateOfBirth = new Date(new Date().setFullYear(new Date().getFullYear() - 18));
+const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$/;
 const validationSchema = yup.object().shape({
   firstName: yup.string().required('First name is required'),
   lastName: yup.string().required('Last name is required'),
@@ -52,13 +46,15 @@ const validationSchema = yup.object().shape({
   gender: yup.string().required('State is required'),
   dateOfBirth: yup.string().required('Date of birth is required'),
 });
-const signUp = (props: Props) => {
+const SignUp = () => {
   const router = useRouter();
   const [date, setDate] = useState(new Date(defaultDateOfBirth));
   const [showModal, setShowModal] = useState(false);
   const [secured, setSecured] = useState(true);
   const [securedConfirm, setSecuredConfirm] = useState(true);
   const [show, setShow] = useState(false);
+  const { width } = useWindowDimensions();
+  const isIPad = width > 500;
   const {
     handleChange,
     handleSubmit,
@@ -82,21 +78,10 @@ const signUp = (props: Props) => {
     },
     validationSchema,
     onSubmit: async (values) => {
-      const {
-        address,
-        dateOfBirth,
-        email,
-        firstName,
-        gender,
-        lastName,
-        password,
-        phoneNumber,
-      } = values;
+      const { address, dateOfBirth, email, firstName, gender, lastName, password, phoneNumber } =
+        values;
 
-      const fullName = `${firstName} ${lastName}`;
-      const formattedPassword = password
-        .replace(/[#?\/\\%&]/g, '')
-        .replace(/:/g, '');
+      const formattedPassword = password.replace(/[#?\/\\%&]/g, '').replace(/:/g, '');
       try {
         const { data } = await axios.post(
           `${api}?api=createaccount&patientemail=${email.toLowerCase()}&patientgender=${gender}&patientfname=${firstName}&patientdob=${dateOfBirth}&patientphone=${phoneNumber}&patientadres=${address}&pasword1=${formattedPassword}&patientlname=${lastName}`
@@ -166,7 +151,6 @@ const signUp = (props: Props) => {
     dateOfBirth,
     email,
     firstName,
-    gender,
     lastName,
     password,
     phoneNumber,
@@ -177,14 +161,15 @@ const signUp = (props: Props) => {
       <ConfirmModal name={firstName} onPress={onPress} isVisible={showModal} />
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
-      >
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingBottom: 100,
+          marginHorizontal: 'auto',
+          width: isIPad ? '80%' : '100%',
+        }}>
         <NavHeader />
         <VStack mt={30}>
-          <BoldHeader
-            text="Sign up"
-            subText="Enter your details on to create account"
-          />
+          <BoldHeader text="Sign up" subText="Enter your details on to create account" />
         </VStack>
 
         <VStack mt={40} gap={25}>
@@ -196,9 +181,7 @@ const signUp = (props: Props) => {
               onChangeText={handleChange('firstName')}
             />
             {touched.firstName && errors.firstName && (
-              <Text style={{ color: 'red', fontWeight: 'bold' }}>
-                {errors.firstName}
-              </Text>
+              <Text style={{ color: 'red', fontWeight: 'bold' }}>{errors.firstName}</Text>
             )}
           </>
           <>
@@ -209,9 +192,7 @@ const signUp = (props: Props) => {
             />
 
             {touched.lastName && errors.lastName && (
-              <Text style={{ color: 'red', fontWeight: 'bold' }}>
-                {errors.lastName}
-              </Text>
+              <Text style={{ color: 'red', fontWeight: 'bold' }}>{errors.lastName}</Text>
             )}
           </>
           <>
@@ -222,9 +203,7 @@ const signUp = (props: Props) => {
               onChangeText={handleChange('email')}
             />
             {touched.email && errors.email && (
-              <Text style={{ color: 'red', fontWeight: 'bold' }}>
-                {errors.email}
-              </Text>
+              <Text style={{ color: 'red', fontWeight: 'bold' }}>{errors.email}</Text>
             )}
           </>
           <>
@@ -235,9 +214,7 @@ const signUp = (props: Props) => {
               keyboardType="phone-pad"
             />
             {touched.phoneNumber && errors.phoneNumber && (
-              <Text style={{ color: 'red', fontWeight: 'bold' }}>
-                {errors.phoneNumber}
-              </Text>
+              <Text style={{ color: 'red', fontWeight: 'bold' }}>{errors.phoneNumber}</Text>
             )}
           </>
           <>
@@ -268,23 +245,14 @@ const signUp = (props: Props) => {
             />
 
             {touched.gender && errors.gender && (
-              <Text style={{ color: 'red', fontWeight: 'bold' }}>
-                {errors.gender}
-              </Text>
+              <Text style={{ color: 'red', fontWeight: 'bold' }}>{errors.gender}</Text>
             )}
           </>
           <>
             {Platform.OS === 'android' && (
               <>
-                <Pressable
-                  onPress={showMode}
-                  style={({ pressed }) => pressed && { opacity: 0.5 }}
-                >
-                  <TextInput
-                    value={dateOfBirth}
-                    placeholder="Date of Birth"
-                    editable={false}
-                  />
+                <Pressable onPress={showMode} style={({ pressed }) => pressed && { opacity: 0.5 }}>
+                  <TextInput value={dateOfBirth} placeholder="Date of Birth" editable={false} />
                 </Pressable>
                 {show && (
                   <DateTimePicker
@@ -300,10 +268,7 @@ const signUp = (props: Props) => {
             )}
             {Platform.OS === 'ios' && (
               <>
-                <Pressable
-                  onPress={showMode}
-                  style={({ pressed }) => pressed && { opacity: 0.5 }}
-                >
+                <Pressable onPress={showMode} style={({ pressed }) => pressed && { opacity: 0.5 }}>
                   <TextInput
                     value={format(date, 'dd/MM/yyyy')}
                     placeholder="Date of Birth"
@@ -326,9 +291,7 @@ const signUp = (props: Props) => {
               </>
             )}
             {touched.dateOfBirth && errors.dateOfBirth && (
-              <Text style={{ color: 'red', fontWeight: 'bold' }}>
-                {errors.dateOfBirth}
-              </Text>
+              <Text style={{ color: 'red', fontWeight: 'bold' }}>{errors.dateOfBirth}</Text>
             )}
           </>
 
@@ -339,9 +302,7 @@ const signUp = (props: Props) => {
               onChangeText={handleChange('address')}
             />
             {touched.address && errors.address && (
-              <Text style={{ color: 'red', fontWeight: 'bold' }}>
-                {errors.address}
-              </Text>
+              <Text style={{ color: 'red', fontWeight: 'bold' }}>{errors.address}</Text>
             )}
           </>
           <>
@@ -355,9 +316,7 @@ const signUp = (props: Props) => {
               setSecured={setSecured}
             />
             {touched.password && errors.password && (
-              <Text style={{ color: 'red', fontWeight: 'bold' }}>
-                {errors.password}
-              </Text>
+              <Text style={{ color: 'red', fontWeight: 'bold' }}>{errors.password}</Text>
             )}
           </>
           <>
@@ -371,38 +330,18 @@ const signUp = (props: Props) => {
               setSecured={setSecuredConfirm}
             />
             {touched.confirmPassword && errors.confirmPassword && (
-              <Text style={{ color: 'red', fontWeight: 'bold' }}>
-                {errors.confirmPassword}
-              </Text>
+              <Text style={{ color: 'red', fontWeight: 'bold' }}>{errors.confirmPassword}</Text>
             )}
           </>
 
-          <MyButton
-            loading={isSubmitting}
-            onPress={() => handleSubmit()}
-            text="Create Account"
-          />
+          <MyButton loading={isSubmitting} onPress={() => handleSubmit()} text="Create Account" />
         </VStack>
       </ScrollView>
     </Container>
   );
 };
 
-export default signUp;
-
-const styles = StyleSheet.create({
-  text: {
-    color: colors.textGreen,
-    fontFamily: 'Poppins',
-  },
-  textContainer: {
-    alignSelf: 'flex-end',
-  },
-  createAccountText: {
-    fontFamily: 'Poppins',
-    textAlign: 'center',
-  },
-});
+export default SignUp;
 
 const styles2 = StyleSheet.create({
   border: {

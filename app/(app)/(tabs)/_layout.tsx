@@ -1,7 +1,7 @@
 import React from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable, Text, View } from 'react-native';
+import { Tabs } from 'expo-router';
+import { Platform, Text, useWindowDimensions } from 'react-native';
 
 import Colors, { colors } from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
@@ -18,7 +18,9 @@ function TabBarIcon(props: {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-
+  const { width } = useWindowDimensions();
+  const isIPad = width > 500;
+  const isIos = Platform.OS === 'ios';
   return (
     <>
       <StatusBar style="light" backgroundColor={colors.textGreen} />
@@ -28,32 +30,33 @@ export default function TabLayout() {
           // Disable the static render of the header on web
           // to prevent a hydration error in React Navigation v6.
           headerShown: useClientOnlyValue(false, true),
-          tabBarStyle: {},
-        }}
-      >
+          tabBarStyle: {
+            gap: 10,
+          },
+          tabBarLabelStyle: {
+            marginLeft: isIPad ? 10 : 0,
+          },
+        }}>
         <Tabs.Screen
           name="home"
           options={{
             title: 'Tab One',
             tabBarIcon: ({ focused }) => (
-              <TabBarIcon
-                name="home"
-                color={focused ? colors.textGreen : colors.textLight}
-              />
+              <TabBarIcon name="home" color={focused ? colors.textGreen : colors.textLight} />
             ),
             headerShown: false,
-            tabBarLabel: ({ focused }) => (
-              <Text
-                style={{
-                  fontFamily: 'Poppins',
-                  fontSize: 12,
-
-                  color: focused ? colors.textGreen : colors.textLight,
-                }}
-              >
-                Home
-              </Text>
-            ),
+            tabBarLabel: ({ focused }) =>
+              isIos ? null : (
+                <Text
+                  style={{
+                    fontFamily: 'Poppins',
+                    fontSize: 12,
+                    marginLeft: isIPad ? 20 : 0,
+                    color: focused ? colors.textGreen : colors.textLight,
+                  }}>
+                  Home
+                </Text>
+              ),
           }}
         />
         <Tabs.Screen
@@ -61,25 +64,22 @@ export default function TabLayout() {
           options={{
             title: 'Tab Two',
             tabBarIcon: ({ color, focused }) => (
-              <TabBarIcon
-                name="calendar"
-                color={focused ? colors.textGreen : colors.textLight}
-              />
+              <TabBarIcon name="calendar" color={focused ? colors.textGreen : colors.textLight} />
             ),
             headerShown: false,
 
-            tabBarLabel: ({ focused }) => (
-              <Text
-                style={{
-                  fontFamily: 'Poppins',
-                  fontSize: 12,
-
-                  color: focused ? colors.textGreen : colors.textLight,
-                }}
-              >
-                Appointments
-              </Text>
-            ),
+            tabBarLabel: ({ focused }) =>
+              isIos ? null : (
+                <Text
+                  style={{
+                    fontFamily: 'Poppins',
+                    fontSize: 12,
+                    marginLeft: isIPad ? 20 : 0,
+                    color: focused ? colors.textGreen : colors.textLight,
+                  }}>
+                  Appointments
+                </Text>
+              ),
           }}
         />
       </Tabs>

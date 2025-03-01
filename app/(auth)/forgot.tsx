@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, Text } from 'react-native';
 import React from 'react';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
@@ -19,7 +19,7 @@ type Props = {};
 const validationSchema = yup.object().shape({
   email: yup.string().email('Invalid email').required('Email is required'),
 });
-const forgot = (props: Props) => {
+const Forget = (props: Props) => {
   const router = useRouter();
   const {
     handleChange,
@@ -28,7 +28,6 @@ const forgot = (props: Props) => {
     errors,
     values,
 
-    resetForm,
     isSubmitting,
   } = useFormik({
     initialValues: {
@@ -69,6 +68,7 @@ const forgot = (props: Props) => {
 
         router.back();
       } catch (error) {
+        console.log(error);
         Toast.show({
           type: 'transparentToast',
           text1: 'Please try again',
@@ -85,10 +85,7 @@ const forgot = (props: Props) => {
     <Container>
       <NavHeader />
       <VStack mt={30}>
-        <BoldHeader
-          text="Forgot Password"
-          subText="Let us help you get back into your account"
-        />
+        <BoldHeader text="Forgot Password" subText="Let us help you get back into your account" />
       </VStack>
       <VStack mt={40} gap={25}>
         <>
@@ -97,24 +94,14 @@ const forgot = (props: Props) => {
             onChangeText={handleChange('email')}
             value={values.email}
           />
-          {touched.email && errors.email && (
-            <Text style={{ color: 'red' }}>{errors.email}</Text>
-          )}
+          {touched.email && errors.email && <Text style={{ color: 'red' }}>{errors.email}</Text>}
         </>
 
-        <MyButton
-          loading={isSubmitting}
-          onPress={() => handleSubmit()}
-          text="Submit"
-        />
+        <MyButton loading={isSubmitting} onPress={() => handleSubmit()} text="Submit" />
 
         <Pressable
           onPress={navigate}
-          style={({ pressed }) => [
-            { opacity: pressed ? 0.5 : 1 },
-            { padding: 4 },
-          ]}
-        >
+          style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }, { padding: 4 }]}>
           <Text style={styles.createAccountText}>
             Remember password ? <Text style={styles.text}>login</Text>
           </Text>
@@ -124,7 +111,7 @@ const forgot = (props: Props) => {
   );
 };
 
-export default forgot;
+export default Forget;
 const styles = StyleSheet.create({
   text: {
     color: colors.textGreen,

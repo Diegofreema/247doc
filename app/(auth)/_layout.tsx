@@ -1,17 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native';
 import React, { useEffect } from 'react';
 import { Redirect, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useAuth } from '@/lib/zustand/auth';
 
-type Props = {};
-
-const AuthLayout = (props: Props) => {
+const AuthLayout = () => {
   const { id, getId } = useAuth();
-  console.log('🚀 ~ AuthLayout ~ id:', id);
+
   useEffect(() => {
     getId();
-  }, []);
+  }, [getId]);
   if (id) {
     return <Redirect href="/home" />;
   }
@@ -25,5 +22,3 @@ const AuthLayout = (props: Props) => {
 };
 
 export default AuthLayout;
-
-const styles = StyleSheet.create({});

@@ -11,11 +11,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import * as Updates from 'expo-updates';
 import { PaperProvider } from 'react-native-paper';
-import Toast, {
-  BaseToast,
-  ErrorToast,
-  ToastConfigParams,
-} from 'react-native-toast-message';
+import Toast, { BaseToast, ErrorToast, ToastConfigParams } from 'react-native-toast-message';
 import { colors } from '@/constants/Colors';
 import { Text, View } from 'react-native';
 export {
@@ -56,14 +52,9 @@ const toastConfig = {
         padding: 10,
         marginHorizontal: 'auto',
         borderRadius: 10,
-      }}
-    >
-      <Text style={{ fontFamily: 'Poppins', color: 'white', fontSize: 12 }}>
-        {text1}
-      </Text>
-      <Text style={{ fontFamily: 'PoppinsBold', color: 'white', fontSize: 17 }}>
-        {text2}
-      </Text>
+      }}>
+      <Text style={{ fontFamily: 'Poppins', color: 'white', fontSize: 12 }}>{text1}</Text>
+      <Text style={{ fontFamily: 'PoppinsBold', color: 'white', fontSize: 17 }}>{text2}</Text>
     </View>
   ),
 };
@@ -128,10 +119,7 @@ function RootLayoutNav() {
       <ThemeProvider value={DefaultTheme}>
         <SafeAreaView style={{ flex: 1 }}>
           <StatusBar style="dark" />
-          <Slot
-            screenOptions={{ headerShown: false }}
-            initialRouteName="(app)/onboard"
-          />
+          <Slot screenOptions={{ headerShown: false }} initialRouteName="(app)/onboard" />
         </SafeAreaView>
       </ThemeProvider>
     </>

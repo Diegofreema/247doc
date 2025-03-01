@@ -7,11 +7,8 @@ import { Button, HStack } from '@gluestack-ui/themed';
 import { Link, useRouter } from 'expo-router';
 import { AntDesign } from '@expo/vector-icons';
 import Animated, { FadeIn, SlideInRight } from 'react-native-reanimated';
-import {
-  GestureDetector,
-  Gesture,
-  Directions,
-} from 'react-native-gesture-handler';
+import { Directions, Gesture, GestureDetector } from 'react-native-gesture-handler';
+
 const onBoardData = [
   {
     heading: 'Welcome to 247Doc',
@@ -21,8 +18,7 @@ const onBoardData = [
   },
   {
     heading: 'Get in touch any time',
-    subText:
-      'We are available to speak with you ANYWHERE, ANYTIME, ALL YEAR ROUND',
+    subText: 'We are available to speak with you ANYWHERE, ANYTIME, ALL YEAR ROUND',
     imgUrl: require('../../assets/images/onboard-two.png'),
   },
   {
@@ -72,10 +68,7 @@ const Onboard = () => {
               {data.heading}
             </Animated.Text>
             <View style={{ minHeight: 110 }}>
-              <Animated.Text
-                entering={animation.delay(150)}
-                style={styles.subText}
-              >
+              <Animated.Text entering={animation.delay(150)} style={styles.subText}>
                 {data.subText}
               </Animated.Text>
             </View>
@@ -94,10 +87,7 @@ const Onboard = () => {
 
                   height: 8,
                   borderRadius: 10,
-                  backgroundColor:
-                    index === currentIndex
-                      ? colors.textGreen
-                      : colors.textLight,
+                  backgroundColor: index === currentIndex ? colors.textGreen : colors.textLight,
                 }}
               />
             ))}
@@ -110,8 +100,7 @@ const Onboard = () => {
               height: 60,
               width: 60,
             }}
-            onPress={onNext}
-          >
+            onPress={onNext}>
             <AntDesign name="arrowright" size={20} color="white" />
           </Button>
         </HStack>

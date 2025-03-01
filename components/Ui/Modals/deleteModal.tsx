@@ -1,14 +1,9 @@
-import {
-  StyleSheet,
-  View,
-  Text,
-  useWindowDimensions,
-  Image,
-} from 'react-native';
+import { useWindowDimensions, View } from 'react-native';
 import Modal from 'react-native-modal';
 import { MyText } from '../MyText';
 import { MyButton } from '../MyButton';
 import { HStack } from '@gluestack-ui/themed';
+
 type Props = {
   onPress: () => void;
   isPending: boolean;
@@ -17,21 +12,13 @@ type Props = {
   onDelete: () => void;
 };
 
-export const DeleteModal = ({
-  isVisible,
-  isPending,
-  onPress,
-  onDelete,
-}: Props): JSX.Element => {
+export const DeleteModal = ({ isVisible, isPending, onPress, onDelete }: Props): JSX.Element => {
   const { width } = useWindowDimensions();
 
   const finalWidth = width - 100;
   return (
     <View>
-      <Modal
-        isVisible={isVisible}
-        style={{ justifyContent: 'center', alignItems: 'center' }}
-      >
+      <Modal isVisible={isVisible} style={{ justifyContent: 'center', alignItems: 'center' }}>
         <View
           style={{
             backgroundColor: 'white',
@@ -41,8 +28,7 @@ export const DeleteModal = ({
             width: finalWidth,
             height: finalWidth,
             borderRadius: 10,
-          }}
-        >
+          }}>
           <MyText
             style={{
               fontFamily: 'PoppinsMedium',
@@ -76,5 +62,3 @@ export const DeleteModal = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({});

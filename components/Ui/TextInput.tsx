@@ -1,13 +1,11 @@
 import { colors } from '@/constants/Colors';
-import { FontAwesome, Ionicons } from '@expo/vector-icons';
-import { HStack, Input } from '@gluestack-ui/themed';
+import { Ionicons } from '@expo/vector-icons';
+import { HStack } from '@gluestack-ui/themed';
 import {
-  StyleSheet,
-  View,
-  Text,
-  TextInputProps,
-  TextInput as TextInputComponent,
   StyleProp,
+  StyleSheet,
+  TextInput as TextInputComponent,
+  TextInputProps,
   TextStyle,
 } from 'react-native';
 
@@ -25,11 +23,7 @@ export const TextInput = (props: Props): JSX.Element => {
     setSecured(!secured);
   };
   return (
-    <HStack
-      style={[styles.input, props.style]}
-      alignItems="center"
-      justifyContent="space-between"
-    >
+    <HStack style={[styles.input, props.style]} alignItems="center" justifyContent="space-between">
       <TextInputComponent
         {...props}
         style={{ fontFamily: 'Poppins', color: 'black', flex: 1 }}

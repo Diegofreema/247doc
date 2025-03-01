@@ -1,13 +1,6 @@
 import { colors } from '@/constants/Colors';
 
-import {
-  StyleSheet,
-  View,
-  Text,
-  StyleProp,
-  TextStyle,
-  ViewStyle,
-} from 'react-native';
+import { StyleProp, TextStyle, ViewStyle } from 'react-native';
 import { Button } from 'react-native-paper';
 
 type Props = {
@@ -18,13 +11,7 @@ type Props = {
   style?: StyleProp<ViewStyle>;
 };
 
-export const MyButton = ({
-  text,
-  textStyle,
-  onPress,
-  style,
-  loading,
-}: Props): JSX.Element => {
+export const MyButton = ({ text, textStyle, onPress, style, loading }: Props): JSX.Element => {
   return (
     <Button
       loading={loading}
@@ -42,11 +29,8 @@ export const MyButton = ({
       ]}
       style={{ borderRadius: 5 }}
       textColor="white"
-      labelStyle={[{ fontFamily: 'Poppins', color: 'white' }, textStyle]}
-    >
+      labelStyle={[{ fontFamily: 'Poppins', color: 'white' }, textStyle]}>
       {text}
     </Button>
   );
 };
-
-const styles = StyleSheet.create({});

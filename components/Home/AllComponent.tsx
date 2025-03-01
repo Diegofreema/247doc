@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, FlatList } from 'react-native';
+import { FlatList, useWindowDimensions, View } from 'react-native';
 import { EmptyText } from '../Ui/EmptyText';
 import { DoctorCard } from './BottomComponent';
 import { Doctors } from '@/types';
@@ -8,6 +8,8 @@ type Props = {
 };
 
 export const AllComponent = ({ data }: Props): JSX.Element => {
+  const { width } = useWindowDimensions();
+  const isIPad = width > 500;
   return (
     <FlatList
       scrollEnabled={false}
@@ -24,6 +26,8 @@ export const AllComponent = ({ data }: Props): JSX.Element => {
       )}
       keyExtractor={(item, index) => index?.toString()}
       ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+      columnWrapperStyle={isIPad ? { gap: 20 } : null}
+      numColumns={isIPad ? 2 : 1}
     />
   );
 };

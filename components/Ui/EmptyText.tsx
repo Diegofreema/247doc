@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 type Props = {
   text: string;
@@ -7,12 +7,7 @@ type Props = {
 export const EmptyText = ({ text }: Props): JSX.Element => {
   return (
     <View style={styles.container}>
-      <Text
-        style={{ fontFamily: 'PoppinsBold', fontSize: 15, textAlign: 'center' }}
-      >
-        {' '}
-        {text}
-      </Text>
+      <Text style={{ fontFamily: 'PoppinsBold', fontSize: 15, textAlign: 'center' }}> {text}</Text>
     </View>
   );
 };

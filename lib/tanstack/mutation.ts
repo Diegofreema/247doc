@@ -10,9 +10,7 @@ export const useDeleteProfile = () => {
   const router = useRouter();
   return useMutation({
     mutationFn: async () => {
-      const { data } = await axios.post(
-        `${api}?api=deleteaccount&patientref=${id}`
-      );
+      const { data } = await axios.post(`${api}?api=deleteaccount&patientref=${id}`);
       return data;
     },
     onSuccess: () => {

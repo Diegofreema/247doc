@@ -1,25 +1,18 @@
 import { useGetSession } from '@/lib/tanstack/queries';
-import {
-  StyleSheet,
-  View,
-  Text,
-  FlatList,
-  Pressable,
-  ScrollView,
-} from 'react-native';
+import { FlatList, Pressable, StyleSheet, useWindowDimensions } from 'react-native';
 import { BottomSheet } from '@rneui/themed';
 import { useShowBottom } from '@/lib/zustand/showBottom';
 import { EmptyText } from '../Ui/EmptyText';
 import { Loading } from '../Ui/Loading';
 import { ErrorComponent } from '../Ui/Error';
-import { Avatar, Card } from 'react-native-paper';
-import { HStack, VStack } from '@gluestack-ui/themed';
+import { Card } from 'react-native-paper';
+import { HStack, View, VStack } from '@gluestack-ui/themed';
 import { Doctors } from '@/types';
 import { MyText } from '../Ui/MyText';
 import { useRouter } from 'expo-router';
 import { MyButton } from '../Ui/MyButton';
-import { format } from 'date-fns';
 import { Image } from 'expo-image';
+
 type Props = {
   cat: string;
 };
@@ -33,12 +26,12 @@ const limitText = (text: string) => {
 
 export const BottomComponent = ({ cat }: Props): JSX.Element => {
   const { data, isPending, refetch, isError, isPaused } = useGetSession(cat);
-
+  const { width } = useWindowDimensions();
+  const isIPad = width > 800;
   const { onClose, open } = useShowBottom();
 
   return (
     <BottomSheet
-      modalProps={{}}
       onBackdropPress={onClose}
       scrollViewProps={{
         showsVerticalScrollIndicator: false,
@@ -54,42 +47,12 @@ export const BottomComponent = ({ cat }: Props): JSX.Element => {
           height: '100%',
         },
       }}
-      isVisible={open}
-    >
+      isVisible={open}>
       {isError || (isPaused && <ErrorComponent refetch={refetch} />)}
       {isPending && <Loading />}
 
       {!isError && !isPaused && !isPending && (
-        // <FlatList
-        //   scrollEnabled={false}
-        //   showsVerticalScrollIndicator={false}
-        //   contentContainerStyle={{
-        //     flexGrow: 1,
-        //     paddingHorizontal: 10,
-        //     paddingBottom: 20,
-        //   }}
-        //   data={data}
-        //   renderItem={({ item }) => <DoctorCard item={item} />}
-        //   ListHeaderComponent={() => (
-        //     <Pressable
-        //       onPress={onClose}
-        //       style={{
-        //         height: 7,
-        //         width: 70,
-        //         backgroundColor: '#ECECEC',
-        //         borderRadius: 10,
-        //         alignSelf: 'center',
-        //         marginTop: 6,
-        //         marginBottom: 30,
-        //       }}
-        //     />
-        //   )}
-        //   ListEmptyComponent={() => (
-        //     <EmptyText text="We currently do not have availability on your selected date" />
-        //   )}
-        //   keyExtractor={(item, index) => index?.toString()}
-        //   ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
-        // />
+        // @ts-ignore
         <>
           <Pressable
             onPress={onClose}
@@ -103,21 +66,20 @@ export const BottomComponent = ({ cat }: Props): JSX.Element => {
               marginBottom: 30,
             }}
           />
-          <ScrollView
+
+          <FlatList
+            data={data}
+            renderItem={({ item }) => <DoctorCard item={item} />}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              flexGrow: 1,
-              paddingHorizontal: 10,
-              paddingBottom: 20,
-            }}
-          >
-            {data.length === 0 && (
+            ListEmptyComponent={() => (
               <EmptyText text="We currently do not have availability on your selected date" />
             )}
-
-            {data?.length > 0 &&
-              data?.map((item, i) => <DoctorCard item={item} key={i} />)}
-          </ScrollView>
+            keyExtractor={(item, index) => index?.toString()}
+            ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+            columnWrapperStyle={isIPad ? { gap: 20 } : null}
+            numColumns={isIPad ? 2 : 1}
+            scrollEnabled={false}
+          />
         </>
       )}
     </BottomSheet>
@@ -146,8 +108,8 @@ export const DoctorCard = ({ item }: { item: Doctors }) => {
         paddingVertical: 20,
         backgroundColor: '#F8F8F8',
         marginBottom: 15,
-      }}
-    >
+        flex: 1,
+      }}>
       <HStack alignItems="center" px={15} gap={10} mb={10}>
         <Image
           source={{
@@ -158,10 +120,7 @@ export const DoctorCard = ({ item }: { item: Doctors }) => {
         />
 
         <VStack>
-          <MyText
-            text={item?.Doctor}
-            style={{ fontFamily: 'PoppinsBold', fontSize: 14 }}
-          />
+          <MyText text={item?.Doctor} style={{ fontFamily: 'PoppinsBold', fontSize: 14 }} />
           <HStack alignItems="center" gap={10}>
             <MyText
               text={limitText(item?.categoryName)}
@@ -182,7 +141,7 @@ export const DoctorCard = ({ item }: { item: Doctors }) => {
           </HStack>
         </VStack>
       </HStack>
-      <VStack px={15}>
+      <VStack px={15} width="100%">
         <MyButton text="View Details" onPress={onPress} />
       </VStack>
     </Card>

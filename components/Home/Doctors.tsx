@@ -1,14 +1,12 @@
-import { StyleSheet, View, Text, FlatList } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { SeeAll } from './SeeAll';
-import { HStack } from '@gluestack-ui/themed';
+import { HStack, VStack } from '@gluestack-ui/themed';
 import { colors } from '@/constants/Colors';
 import { Image } from 'expo-image';
-import { VStack } from '@gluestack-ui/themed';
 import { MyText } from '../Ui/MyText';
 
-type Props = {};
 const data = [3, 3, 4, 4, 5, 46, , 7, 5, 56, 767, 86, 6, 8];
-export const Doctors = ({}: Props): JSX.Element => {
+export const Doctors = (): JSX.Element => {
   return (
     <View>
       <SeeAll onPress={() => {}} text="Doctors" subText="See all" />
@@ -25,18 +23,9 @@ export const Doctors = ({}: Props): JSX.Element => {
   );
 };
 
-const styles = StyleSheet.create({});
-
 const Doctor = () => {
   return (
-    <HStack
-      alignItems="center"
-      gap={10}
-      mb={20}
-      bg={colors.bgGray}
-      p={10}
-      borderRadius={6}
-    >
+    <HStack alignItems="center" gap={10} mb={20} bg={colors.bgGray} p={10} borderRadius={6}>
       <Image
         source={require('../../assets/images/doc.png')}
         style={{ width: 50, height: 50 }}

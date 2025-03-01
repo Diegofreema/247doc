@@ -1,21 +1,9 @@
 import { HStack, VStack } from '@gluestack-ui/themed';
 import { Image } from 'expo-image';
-import {
-  StyleSheet,
-  View,
-  Text,
-  FlatList,
-  useWindowDimensions,
-  Pressable,
-  ScrollView,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
-  RefreshControl,
-} from 'react-native';
+import { Pressable, RefreshControl, ScrollView, useWindowDimensions, View } from 'react-native';
 import { MyText } from '../Ui/MyText';
 import { FontAwesome } from '@expo/vector-icons';
-import { colors } from '../../constants/Colors';
-import { useState } from 'react';
+import { colors } from '@/constants/Colors';
 import { SeeAll } from './SeeAll';
 import { useRouter } from 'expo-router';
 import { useComingSessions } from '@/lib/tanstack/queries';
@@ -23,24 +11,12 @@ import { useAuth } from '@/lib/zustand/auth';
 import { ErrorComponent } from '../Ui/Error';
 import { Loading } from '../Ui/Loading';
 import { UpComingSessions } from '@/types';
-import { format } from 'date-fns';
 import * as Linking from 'expo-linking';
-type Props = {};
 
-export const AppointmentCard = ({}: Props): JSX.Element => {
+export const AppointmentCard = (): JSX.Element => {
   const { id } = useAuth();
-  const {
-    data,
-    isPending,
-    refetch,
-    isError,
-    isPaused,
-    isFetching,
-    isRefetchError,
-    isRefetching,
-  } = useComingSessions(id);
+  const { data, isPending, refetch, isError, isPaused, isRefetching } = useComingSessions(id);
 
-  const [currentIndex, setCurrentIndex] = useState<number | null>(0);
   const router = useRouter();
   if (isError || isPaused) {
     return <ErrorComponent refetch={refetch} />;
@@ -61,9 +37,7 @@ export const AppointmentCard = ({}: Props): JSX.Element => {
       </View>
 
       <ScrollView
-        refreshControl={
-          <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
-        }
+        refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} />}
         scrollEventThrottle={16}
         // onScroll={handleScroll}
         showsHorizontalScrollIndicator={false}
@@ -73,8 +47,7 @@ export const AppointmentCard = ({}: Props): JSX.Element => {
           paddingRight: 10,
           backgroundColor: 'transparent',
           gap: 10,
-        }}
-      >
+        }}>
         {data?.length === 0 && <ListEmptyComponent />}
         {data?.length > 0 &&
           data?.slice(0, 3).map((item, index) => {
@@ -84,8 +57,6 @@ export const AppointmentCard = ({}: Props): JSX.Element => {
     </>
   );
 };
-
-const styles = StyleSheet.create({});
 
 const AppointmentCardsItem = ({ item }: { item: UpComingSessions }) => {
   const { width } = useWindowDimensions();
@@ -125,8 +96,7 @@ const AppointmentCardsItem = ({ item }: { item: UpComingSessions }) => {
         padding={10}
         borderRadius={10}
         bg={colors.textGreen2}
-        alignItems="center"
-      >
+        alignItems="center">
         <HStack gap={5} alignItems="center">
           <FontAwesome name="calendar" color="white" size={13} />
           <MyText
@@ -150,8 +120,7 @@ const AppointmentCardsItem = ({ item }: { item: UpComingSessions }) => {
               backgroundColor: colors.textGreen,
               borderRadius: 5,
             },
-          ]}
-        >
+          ]}>
           <MyText
             text={'Meeting link'}
             style={{
@@ -188,8 +157,7 @@ appointment at the moment"
               padding={10}
               borderRadius={10}
               bg={colors.textGreen2}
-              mt={10}
-            >
+              mt={10}>
               <FontAwesome name="calendar" color="white" size={13} />
               <MyText
                 text="Book an Appointment"

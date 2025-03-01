@@ -1,32 +1,20 @@
-import {
-  StyleSheet,
-  View,
-  Text,
-  useWindowDimensions,
-  Image,
-} from 'react-native';
+import { Image, useWindowDimensions, View } from 'react-native';
 import Modal from 'react-native-modal';
 import { MyText } from '../MyText';
 import { MyButton } from '../MyButton';
+
 type Props = {
   onPress: () => void;
   name: string;
   isVisible: boolean;
 };
 
-export const ConfirmModal = ({
-  isVisible,
-  name,
-  onPress,
-}: Props): JSX.Element => {
+export const ConfirmModal = ({ isVisible, name, onPress }: Props): JSX.Element => {
   const { width } = useWindowDimensions();
   const finalWidth = width - 30;
   return (
     <View>
-      <Modal
-        isVisible={isVisible}
-        style={{ justifyContent: 'center', alignItems: 'center' }}
-      >
+      <Modal isVisible={isVisible} style={{ justifyContent: 'center', alignItems: 'center' }}>
         <View
           style={{
             backgroundColor: 'white',
@@ -36,8 +24,7 @@ export const ConfirmModal = ({
             width: finalWidth,
 
             borderRadius: 10,
-          }}
-        >
+          }}>
           <Image
             source={require('../../../assets/images/confirm.png')}
             style={{ width: 60, height: 60 }}
@@ -66,5 +53,3 @@ export const ConfirmModal = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({});

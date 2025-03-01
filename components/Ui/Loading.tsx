@@ -1,10 +1,8 @@
 import { colors } from '@/constants/Colors';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 
-type Props = {};
-
-export const Loading = ({}: Props): JSX.Element => {
+export const Loading = (): JSX.Element => {
   return (
     <View
       style={{
@@ -12,11 +10,8 @@ export const Loading = ({}: Props): JSX.Element => {
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'white',
-      }}
-    >
+      }}>
       <ActivityIndicator size="large" color={colors.textGreen} />
     </View>
   );
 };
-
-const styles = StyleSheet.create({});
