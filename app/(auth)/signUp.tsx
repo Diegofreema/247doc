@@ -90,13 +90,6 @@ const SignUp = () => {
         console.log(data?.result);
 
         if (data.result === 'Success') {
-          Toast.show({
-            type: 'transparentToast',
-            text1: 'Please a verification link has been sent to your email.',
-            text2: 'Verify your account, before you can log in.',
-            position: 'top',
-            visibilityTime: 9000,
-          });
           setShowModal(true);
           return;
         }

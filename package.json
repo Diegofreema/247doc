@@ -42,7 +42,7 @@
     "expo-status-bar": "~1.12.1",
     "expo-store-review": "~7.0.2",
     "expo-system-ui": "~3.0.7",
-    "expo-updates": "~0.25.20",
+    "expo-updates": "~0.25.28",
     "expo-web-browser": "~13.0.3",
     "formik": "^2.4.5",
     "formik-validator-zod": "^2.0.1",

@@ -40,6 +40,8 @@ const Forget = (props: Props) => {
           `${api}?api=recoverpassword&patientemail=${values.email.toLowerCase()}`
         );
 
+        console.log(data.result);
+
         if (data === "{'result': 'failed'}") {
           Toast.show({
             type: 'transparentToast',
@@ -49,22 +51,24 @@ const Forget = (props: Props) => {
           });
           return;
         }
-        if (data !== '') {
+        if (data.result === 'This Email is not registered') {
           Toast.show({
             type: 'transparentToast',
-            text1: 'Please try again',
-            text2: 'Email not found',
+            text1: 'Please try again try a different email',
+            text2: 'This Email is not found',
             position: 'top',
           });
           return;
         }
 
-        Toast.show({
-          type: 'transparentToast',
-          text1: 'Please check your email',
-          text2: 'We have sent you an email',
-          position: 'top',
-        });
+        if (data.result === 'sent') {
+          Toast.show({
+            type: 'transparentToast',
+            text1: 'Please check your email',
+            text2: 'We have sent you an email',
+            position: 'top',
+          });
+        }
 
         router.back();
       } catch (error) {
@@ -93,6 +97,7 @@ const Forget = (props: Props) => {
             placeholder="Email"
             onChangeText={handleChange('email')}
             value={values.email}
+            autoCapitalize="none"
           />
           {touched.email && errors.email && <Text style={{ color: 'red' }}>{errors.email}</Text>}
         </>

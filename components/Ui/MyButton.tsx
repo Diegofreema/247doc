@@ -5,7 +5,7 @@ import { Button } from 'react-native-paper';
 
 type Props = {
   text: string;
-  onPress: () => void;
+  onPress: (() => void) | (() => Promise<void>);
   loading?: boolean;
   textStyle?: StyleProp<TextStyle>;
   style?: StyleProp<ViewStyle>;

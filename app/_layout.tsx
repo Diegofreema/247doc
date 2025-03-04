@@ -1,7 +1,7 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Slot } from 'expo-router';
+import { ErrorBoundaryProps, Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { GluestackUIProvider } from '@gluestack-ui/themed';
@@ -14,11 +14,16 @@ import { PaperProvider } from 'react-native-paper';
 import Toast, { BaseToast, ErrorToast, ToastConfigParams } from 'react-native-toast-message';
 import { colors } from '@/constants/Colors';
 import { Text, View } from 'react-native';
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
-
+import { MyButton } from '@/components/Ui/MyButton';
+// export { ErrorBoundary } from 'expo-router';
+export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', gap: 5 }}>
+      <Text style={{ fontSize: 30, fontWeight: 700 }}>{error.message}</Text>
+      <MyButton style={{ minWidth: 200 }} onPress={retry} text="Try Again?" />
+    </View>
+  );
+}
 const toastConfig = {
   success: (props: any) => (
     <BaseToast
