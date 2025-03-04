@@ -6,7 +6,7 @@ import { colors } from '@/constants/Colors';
 import { Button, HStack } from '@gluestack-ui/themed';
 import { Link, useRouter } from 'expo-router';
 import { AntDesign } from '@expo/vector-icons';
-import Animated, { FadeIn, SlideInRight } from 'react-native-reanimated';
+import Animated, { FadeIn, runOnJS, SlideInRight } from 'react-native-reanimated';
 import { Directions, Gesture, GestureDetector } from 'react-native-gesture-handler';
 
 const onBoardData = [
@@ -50,8 +50,16 @@ const Onboard = () => {
   };
 
   const swipe = Gesture.Simultaneous(
-    Gesture.Fling().direction(Directions.RIGHT).onEnd(onBack),
-    Gesture.Fling().direction(Directions.LEFT).onEnd(onNext)
+    Gesture.Fling()
+      .direction(Directions.RIGHT)
+      .onEnd(() => {
+        runOnJS(onBack)();
+      }),
+    Gesture.Fling()
+      .direction(Directions.LEFT)
+      .onEnd(() => {
+        runOnJS(onNext)();
+      })
   );
 
   const animation = SlideInRight;

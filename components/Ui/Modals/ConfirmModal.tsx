@@ -1,5 +1,5 @@
-import { Image, useWindowDimensions, View } from 'react-native';
-import Modal from 'react-native-modal';
+import { Image, useWindowDimensions, View, Modal } from 'react-native';
+
 import { MyText } from '../MyText';
 import { MyButton } from '../MyButton';
 
@@ -13,41 +13,48 @@ export const ConfirmModal = ({ isVisible, name, onPress }: Props): JSX.Element =
   const { width } = useWindowDimensions();
   const finalWidth = width - 30;
   return (
-    <View>
-      <Modal isVisible={isVisible} style={{ justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ flex: 1, backgroundColor: 'transparent' }}>
+      <Modal visible={isVisible} style={{ flex: 1, backgroundColor: 'rgba(255, 255, 255, 0.5)' }}>
         <View
           style={{
-            backgroundColor: 'white',
-            padding: 40,
+            flex: 1,
+            justifyContent: 'center',
             alignItems: 'center',
-            gap: 10,
-            width: finalWidth,
-
-            borderRadius: 10,
+            backgroundColor: 'transparent',
           }}>
-          <Image
-            source={require('../../../assets/images/confirm.png')}
-            style={{ width: 60, height: 60 }}
-            resizeMode="contain"
-          />
-          <MyText
+          <View
             style={{
-              fontFamily: 'PoppinsBold',
-              fontSize: 18,
-              textAlign: 'center',
-            }}
-            text="Account Created, Please check your email"
-          />
-          <MyText
-            style={{ fontFamily: 'Poppins', fontSize: 13, textAlign: 'center' }}
-            text={`We sent a link to verify your email`}
-          />
-          <MyText
-            style={{ fontFamily: 'Poppins', fontSize: 13, textAlign: 'center' }}
-            text={`Verify your email before you will be able to login`}
-          />
+              backgroundColor: 'white',
+              padding: 40,
+              alignItems: 'center',
+              gap: 10,
+              width: finalWidth,
+              borderRadius: 10,
+            }}>
+            <Image
+              source={require('../../../assets/images/confirm.png')}
+              style={{ width: 60, height: 60 }}
+              resizeMode="contain"
+            />
+            <MyText
+              style={{
+                fontFamily: 'PoppinsBold',
+                fontSize: 18,
+                textAlign: 'center',
+              }}
+              text="Account Created, Please check your email"
+            />
+            <MyText
+              style={{ fontFamily: 'Poppins', fontSize: 13, textAlign: 'center' }}
+              text={`We sent a link to verify your email`}
+            />
+            <MyText
+              style={{ fontFamily: 'Poppins', fontSize: 13, textAlign: 'center' }}
+              text={`Verify your email before you will be able to login`}
+            />
 
-          <MyButton text="Continue" onPress={onPress} style={{ width: 150 }} />
+            <MyButton text="Continue" onPress={onPress} style={{ width: 150 }} />
+          </View>
         </View>
       </Modal>
     </View>

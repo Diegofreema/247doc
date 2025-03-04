@@ -6,7 +6,11 @@ type Props = {
 };
 
 export const Container = ({ children, style }: PropsWithChildren<Props>): JSX.Element => {
-  return <View style={[styles.container, style]}>{children}</View>;
+  return (
+    <View collapsable={false} style={[styles.container, style]}>
+      {children}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({

@@ -18,8 +18,8 @@ import { MyButton } from '@/components/Ui/MyButton';
 // export { ErrorBoundary } from 'expo-router';
 export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', gap: 5 }}>
-      <Text style={{ fontSize: 30, fontWeight: 700 }}>{error.message}</Text>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', gap: 8 }}>
+      <Text style={{ fontSize: 20, fontWeight: 700, textAlign: 'center' }}>{error.message}</Text>
       <MyButton style={{ minWidth: 200 }} onPress={retry} text="Try Again?" />
     </View>
   );
@@ -124,7 +124,7 @@ function RootLayoutNav() {
       <ThemeProvider value={DefaultTheme}>
         <SafeAreaView style={{ flex: 1 }}>
           <StatusBar style="dark" />
-          <Slot screenOptions={{ headerShown: false }} initialRouteName="(app)/onboard" />
+          <Slot screenOptions={{ headerShown: false }} />
         </SafeAreaView>
       </ThemeProvider>
     </>

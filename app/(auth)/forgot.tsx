@@ -15,11 +15,10 @@ import axios from 'axios';
 import { api } from '@/lib/helper';
 import Toast from 'react-native-toast-message';
 
-type Props = {};
 const validationSchema = yup.object().shape({
   email: yup.string().email('Invalid email').required('Email is required'),
 });
-const Forget = (props: Props) => {
+const Forget = () => {
   const router = useRouter();
   const {
     handleChange,

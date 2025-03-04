@@ -49,7 +49,7 @@ const validationSchema = yup.object().shape({
 const SignUp = () => {
   const router = useRouter();
   const [date, setDate] = useState(new Date(defaultDateOfBirth));
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(true);
   const [secured, setSecured] = useState(true);
   const [securedConfirm, setSecuredConfirm] = useState(true);
   const [show, setShow] = useState(false);
