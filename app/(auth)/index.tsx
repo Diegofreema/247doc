@@ -92,7 +92,12 @@ const Login = () => {
 
           <VStack mt={40} gap={25}>
             <>
-              <TextInput value={email} placeholder="Email" onChangeText={handleChange('email')} />
+              <TextInput
+                autoCapitalize="none"
+                value={email}
+                placeholder="Email"
+                onChangeText={handleChange('email')}
+              />
 
               {errors.email && touched.email && (
                 <Text style={{ color: 'red' }}>{errors.email}</Text>

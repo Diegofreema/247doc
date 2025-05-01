@@ -6,11 +6,12 @@ import {
   StyleSheet,
   TextInput as TextInputComponent,
   TextInputProps,
-  TextStyle,
+  ViewStyle,
 } from 'react-native';
 
+// @ts-ignore
 interface Props extends TextInputProps {
-  style?: StyleProp<TextStyle>;
+  style?: StyleProp<ViewStyle>;
   password?: boolean;
   setSecured?: (secured: boolean) => void;
   secured?: boolean;

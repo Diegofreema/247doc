@@ -65,7 +65,10 @@ const toastConfig = {
 };
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
-
+SplashScreen.setOptions({
+  duration: 3000,
+  fade: true,
+});
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),

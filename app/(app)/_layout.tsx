@@ -16,7 +16,7 @@ const Layout = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <StatusBar style="dark" />
-      <Stack screenOptions={{ headerShown: false }} initialRouteName="onboard" />
+      <Stack screenOptions={{ headerShown: false }} />
     </QueryClientProvider>
   );
 };

@@ -1,12 +1,18 @@
 import { colors } from '@/constants/Colors';
-import { View } from 'react-native';
-import Modal from 'react-native-modal';
+import { View, Modal } from 'react-native';
+
 import { ActivityIndicator } from 'react-native-paper';
 
 export const LoadingComponent = ({ isLoading }: { isLoading: boolean }) => {
   return (
-    <View>
-      <Modal isVisible={isLoading} style={{ justifyContent: 'center', alignItems: 'center' }}>
+    <Modal visible={isLoading} style={{ flex: 1, backgroundColor: 'rgba(255, 255, 255, 0.5)' }}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'transparent',
+        }}>
         <View
           style={{
             backgroundColor: 'white',
@@ -19,7 +25,7 @@ export const LoadingComponent = ({ isLoading }: { isLoading: boolean }) => {
           }}>
           <ActivityIndicator color={colors.textGreen} size="large" />
         </View>
-      </Modal>
-    </View>
+      </View>
+    </Modal>
   );
 };

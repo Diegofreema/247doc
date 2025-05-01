@@ -1,5 +1,5 @@
-import { useWindowDimensions, View } from 'react-native';
-import Modal from 'react-native-modal';
+import { useWindowDimensions, View, Modal } from 'react-native';
+
 import { MyText } from '../MyText';
 import { MyButton } from '../MyButton';
 import { HStack } from '@gluestack-ui/themed';
@@ -8,7 +8,6 @@ type Props = {
   onPress: () => void;
   isPending: boolean;
   isVisible: boolean;
-
   onDelete: () => void;
 };
 
@@ -17,8 +16,14 @@ export const DeleteModal = ({ isVisible, isPending, onPress, onDelete }: Props):
 
   const finalWidth = width - 100;
   return (
-    <View>
-      <Modal isVisible={isVisible} style={{ justifyContent: 'center', alignItems: 'center' }}>
+    <Modal visible={isVisible} style={{ flex: 1, backgroundColor: 'rgba(255, 255, 255, 0.5)' }}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'transparent',
+        }}>
         <View
           style={{
             backgroundColor: 'white',
@@ -58,7 +63,7 @@ export const DeleteModal = ({ isVisible, isPending, onPress, onDelete }: Props):
             />
           </HStack>
         </View>
-      </Modal>
-    </View>
+      </View>
+    </Modal>
   );
 };
